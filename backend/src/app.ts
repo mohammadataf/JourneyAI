@@ -1,4 +1,5 @@
 import authRouter from "./modules/auth/routes/auth.routes";
+import mapRouter from "./modules/map/routes/map.route";
 import express from "express";
 import cors from "cors";
 import helmet from "helmet";
@@ -16,6 +17,7 @@ app.use(morgan("dev"));
 
 
 app.use("/api/v1/auth", authRouter);
+app.use("/api/v1/map", mapRouter);
 
 /**
  * Health Check Route
