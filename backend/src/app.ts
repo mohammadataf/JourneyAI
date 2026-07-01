@@ -23,7 +23,7 @@ app.use("/api/v1/auth", authRouter);
 app.get("/health", (_req, res) => {
   res.status(200).json({
     success: true,
-    message: "JourneyAI Backend is running 🚀",
+    message: "JourneyAI Backend is running ",
     timestamp: new Date().toISOString(),
   });
 });

@@ -8,9 +8,9 @@ const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log(`
 ====================================
-🚀 JourneyAI Backend Started
-🌍 Environment : Development
-📡 Server      : http://localhost:${PORT}
+ JourneyAI Backend Started
+ Environment : Development
+ Server      : http://localhost:${PORT}
 ====================================
 `);
 });
