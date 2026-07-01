@@ -12,9 +12,11 @@ import type { Place } from "../../services/searchService";
 import FlyToLocation from "./FlyToLocation";
 import { getRoute, type Route } from "../../services/routeService";
 import RoutePath from "./RoutePath";
+import RouteInfoCard from "./RouteInfoCard";
 
 const MapView = () => {
     const {location, loading, error} = useCurrentLocation();
+    const [start, setStart] = useState<Place | null>(null);
     const [destination, setDestination] = useState<Place | null>(null);
     const [route, setRoute] = useState<Route | null>(null);
 
@@ -23,22 +25,26 @@ const MapView = () => {
       const fetchRoute = async () => {
         if (!location || !destination) return;
 
-        const routeData = await getRoute(
-          {
-            latitude: location.latitude, // start lat 
-            longitude: location.longitude,// start lon
-          },
-          {
-            latitude: Number(destination.lat), //destination lat
-            longitude: Number(destination.lon), // dest lon
-          }
-        );
+         const routeData = await getRoute(
+              start? { // if user enter start loc then use start else user curr loc
+                    latitude: Number(start.lat),
+                    longitude: Number(start.lon),
+                  }
+                : {
+                    latitude: location.latitude, // user curr loc 
+                    longitude: location.longitude,
+                  },
+              {
+                latitude: Number(destination.lat),
+                longitude: Number(destination.lon),
+              }
+            );
 
         setRoute(routeData);
       };
 
       fetchRoute();
-    }, [location, destination]);
+    }, [location, start, destination]);
 
     if (loading) return <h2>Getting your location...</h2>;
     if (error) return <h2>{error}</h2>;
@@ -47,7 +53,11 @@ const MapView = () => {
 
   return (
     <>
-    <SearchBar onPlaceSelect={setDestination} />
+     <SearchBar
+      onStartSelect={setStart} // we are passing the function setStart as a prop to search bar.
+//       we are saying to SearchBar  whenever you need to update the start location, call my       setStart function.
+      onDestinationSelect={setDestination} // same here
+    />
     <MapContainer
       center={[
         location!.latitude,
@@ -72,6 +82,19 @@ const MapView = () => {
         </Marker>
 
         {destination && (
+          <Marker
+            position={[
+              Number(destination.lat),
+              Number(destination.lon),
+            ]}
+          >
+            <Popup>
+              {destination.name || destination.display_name}
+            </Popup>
+          </Marker>
+        )}
+
+        {destination && (
           <FlyToLocation
             latitude={Number(destination.lat)}
             longitude={Number(destination.lon)}
@@ -79,6 +102,7 @@ const MapView = () => {
         )}
         {route && <RoutePath coordinates={route.coordinates} />}
     </MapContainer>
+    {route && <RouteInfoCard route={route} />}
     </>
   );
 };
