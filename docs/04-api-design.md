@@ -60,6 +60,26 @@ The registration endpoint validates incoming request data before calling the ser
 
 If validation fails, the API returns HTTP 400.
 
+## Validation Response
+
+The registration endpoint validates incoming request data before calling the service layer.
+
+If validation fails, the API returns HTTP 400.
+
+Example:
+
+```json
+{
+  "success": false,
+  "message": "Validation failed",
+  "errors": {
+    "email": [
+      "Please enter a valid email address"
+    ]
+  }
+}
+```
+
 ## Future Improvements
 
 The registration endpoint will include:

@@ -100,3 +100,12 @@ Status: ✅ Passed
 ### Missing Name
 
 Status: ✅ Passed
+
+## Validation Tests
+
+| Test Case | Status |
+|------------|--------|
+| Valid Request | ✅ Passed |
+| Invalid Email | ✅ Passed |
+| Short Password | ✅ Passed |
+| Empty Name | ✅ Passed |
