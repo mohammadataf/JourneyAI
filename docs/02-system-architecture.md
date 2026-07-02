@@ -168,6 +168,27 @@ JourneyAI follows:
 
 ---
 
+## Service Layer
+
+Services receive validated data from controllers.
+
+They contain business logic and remain independent of HTTP-specific objects such as `Request` and `Response`.
+
+Current Flow:
+
+Route
+↓
+
+Controller
+
+↓
+
+Validation
+
+↓
+
+Service
+
 # Current Status
 
 Completed
@@ -177,10 +198,10 @@ Completed
 - Authentication Route
 - Authentication Controller
 - Authentication Service
+- Validation
 
 Upcoming
 
-- Validation
 - Database Layer
 - Repository Pattern
 - JWT Authentication
