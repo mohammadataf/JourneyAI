@@ -1,15 +1,22 @@
 import { Request, Response } from "express";
 
+import { registerSchema } from "../validators/register.validator";
+import { registerUserService } from "../services/auth.service";
+
 export const registerUser = (req: Request, res: Response): void => {
-    const { name, email, password } = req.body;
 
-    res.status(200).json({
-        success: true,
-           "message": "Registration request received successfully",
-        data: {
-    name,
-    email
-}
-    });
+    const validationResult = registerSchema.safeParse(req.body);
 
+    if (!validationResult.success) {
+        res.status(400).json({
+            success: false,
+            message: "Validation failed"
+        });
+
+        return;
+    }
+
+    const result = registerUserService();
+
+    res.status(200).json(result);
 };
