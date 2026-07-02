@@ -1,6 +1,6 @@
 # Testing
 
-# Current Testing Tool
+# Testing Tool
 
 Thunder Client (VS Code)
 
@@ -14,7 +14,103 @@ POST
 
 ---
 
-## Request
+# Test Cases
+
+## Valid Registration
+
+Request
+
+```json
+{
+    "name": "John Doe",
+    "email": "john@gmail.com",
+    "password": "12345678"
+}
+```
+
+Expected Result
+
+- Status 200
+- Registration successful
+
+Status
+
+✅ Passed
+
+---
+
+## Invalid Email
+
+Request
+
+```json
+{
+    "name": "John Doe",
+    "email": "abc",
+    "password": "12345678"
+}
+```
+
+Expected Result
+
+- Status 400
+- Email validation error
+
+Status
+
+✅ Passed
+
+---
+
+## Short Password
+
+Request
+
+```json
+{
+    "name": "John Doe",
+    "email": "john@gmail.com",
+    "password": "123"
+}
+```
+
+Expected Result
+
+- Status 400
+- Password validation error
+
+Status
+
+✅ Passed
+
+---
+
+## Empty Name
+
+Request
+
+```json
+{
+    "name": "",
+    "email": "john@gmail.com",
+    "password": "12345678"
+}
+```
+
+Expected Result
+
+- Status 400
+- Name validation error
+
+Status
+
+✅ Passed
+
+---
+
+## Duplicate Email
+
+Request
 
 ```json
 {
@@ -24,88 +120,30 @@ POST
 }
 ```
 
----
+Expected Result
 
-## Expected Response
+- Duplicate email detected
 
-```json
-{
-    "success": true,
-    "message": "Registration service executed successfully."
-}
-```
+Status
+
+✅ Passed
 
 ---
 
-# Test Results
+# Current Testing Coverage
 
-Status Code
+Completed
 
-200 OK
+- Route Testing
+- Controller Testing
+- Service Testing
+- Validation Testing
+- Duplicate Email Testing
 
-Result
+Upcoming
 
-Authentication request successfully reaches:
-
-Route
-
-↓
-
-Controller
-
-↓
-
-Service
-
-↓
-
-Response
-
----
-
-# Future Test Cases
-
-Authentication
-
-- Register User
-- Login User
-
-Validation
-
-- Missing Name
-- Missing Email
-- Invalid Email
-- Weak Password
-
-Security
-
-- SQL Injection
-- XSS
-- JWT Authentication
-
-## Validation Tests
-
-### Valid Request
-
-Status: ✅ Passed
-
-### Invalid Email
-
-Status: ✅ Passed
-
-### Short Password
-
-Status: ✅ Passed
-
-### Missing Name
-
-Status: ✅ Passed
-
-## Validation Tests
-
-| Test Case | Status |
-|------------|--------|
-| Valid Request | ✅ Passed |
-| Invalid Email | ✅ Passed |
-| Short Password | ✅ Passed |
-| Empty Name | ✅ Passed |
+- Prisma Integration Tests
+- Password Hashing Tests
+- JWT Tests
+- Login Tests
+- Authorization Tests

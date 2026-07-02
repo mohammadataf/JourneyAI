@@ -4,11 +4,11 @@
 
 JourneyAI follows a layered backend architecture.
 
-Each layer has a single responsibility, making the application easier to maintain, test, and scale.
+Each layer has a single responsibility, making the application modular, maintainable, scalable, and easy to test.
 
 ---
 
-# Current Architecture
+# Current Backend Architecture
 
 Client
     ↓
@@ -17,6 +17,8 @@ Express Application
 Routes
     ↓
 Controllers
+    ↓
+Validation (Zod)
     ↓
 Services
     ↓
@@ -31,10 +33,10 @@ Response
 Responsible for:
 
 - Starting the server
-- Loading global middleware
-- Registering application routes
+- Registering middleware
+- Registering routes
 
-Files:
+Files
 
 - src/app.ts
 - src/server.ts
@@ -43,17 +45,12 @@ Files:
 
 ## Routes
 
-Routes define API endpoints.
+Routes map incoming HTTP requests to controllers.
 
-Their only responsibility is mapping an HTTP request to the appropriate controller.
+Responsibilities
 
-Example:
-
-POST /api/v1/auth/register
-
-↓
-
-registerUser()
+- Define API endpoints
+- Forward requests to controllers
 
 Routes should never contain business logic.
 
@@ -63,16 +60,26 @@ Routes should never contain business logic.
 
 Controllers handle HTTP communication.
 
-Responsibilities:
+Responsibilities
 
-- Receive Request
-- Read Request Body
-- Call Services
-- Return HTTP Response
+- Receive request
+- Validate request
+- Call service layer
+- Return HTTP response
 
-Controllers should remain small.
+Controllers remain thin.
 
-Business logic should not be written here.
+---
+
+## Validation
+
+Validation is implemented using Zod.
+
+Responsibilities
+
+- Validate incoming request data
+- Prevent invalid data from reaching services
+- Return HTTP 400 for invalid requests
 
 ---
 
@@ -80,27 +87,20 @@ Business logic should not be written here.
 
 Services contain business logic.
 
-Examples:
+Responsibilities
 
-- Register User
-- Login User
-- Validate Credentials
-- Generate Tokens
+- Process validated data
+- Check duplicate users
+- Handle business rules
+- Prepare response
 
-Currently the authentication service returns a sample response.
-
-Future responsibilities include:
-
-- Validation
-- Password Hashing
-- JWT Generation
-- User Creation
+Services never use Express Request or Response objects.
 
 ---
 
-# Current Authentication Flow
+# Authentication Request Flow
 
-Thunder Client
+Client
 
 ↓
 
@@ -108,19 +108,43 @@ POST /api/v1/auth/register
 
 ↓
 
-Auth Route
+Route
 
 ↓
 
-Auth Controller
+Controller
 
 ↓
 
-Auth Service
+Zod Validation
+
+↓
+
+Authentication Service
 
 ↓
 
 JSON Response
+
+---
+
+# Current Business Rules
+
+Implemented
+
+- Name validation
+- Email validation
+- Password validation
+- Duplicate email check (temporary in-memory storage)
+
+Upcoming
+
+- PostgreSQL
+- Prisma ORM
+- Password Hashing
+- JWT Authentication
+- Refresh Tokens
+- Protected Routes
 
 ---
 
@@ -158,51 +182,11 @@ server.ts
 
 # Design Principles
 
-JourneyAI follows:
+JourneyAI follows
 
 - Separation of Concerns
 - Layered Architecture
 - Feature-based Folder Structure
-- Small Controllers
+- Thin Controllers
 - Business Logic inside Services
-
----
-
-## Service Layer
-
-Services receive validated data from controllers.
-
-They contain business logic and remain independent of HTTP-specific objects such as `Request` and `Response`.
-
-Current Flow:
-
-Route
-↓
-
-Controller
-
-↓
-
-Validation
-
-↓
-
-Service
-
-# Current Status
-
-Completed
-
-- Express Backend
-- TypeScript Configuration
-- Authentication Route
-- Authentication Controller
-- Authentication Service
-- Validation
-
-Upcoming
-
-- Database Layer
-- Repository Pattern
-- JWT Authentication
-- Authorization Middleware
+- Validation before Service Execution

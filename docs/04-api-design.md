@@ -12,11 +12,13 @@ http://localhost:5000/api/v1
 
 ### Description
 
-Receives a registration request from the client.
+Registers a new user.
 
-At the current stage this endpoint only demonstrates the backend request flow.
+Incoming requests are validated before reaching the service layer.
 
-Database integration and validation will be implemented in upcoming sprints.
+Duplicate email addresses are rejected.
+
+(Currently duplicate checking uses an in-memory array. It will later be replaced by PostgreSQL.)
 
 ---
 
@@ -32,62 +34,106 @@ Database integration and validation will be implemented in upcoming sprints.
 
 ---
 
-## Current Response
+## Successful Response
+
+Status Code
+
+200 OK
 
 ```json
 {
     "success": true,
-    "message": "Registration service executed successfully."
+    "message": "Registration request processed successfully.",
+    "data": {
+        "name": "Mohammad Ataf",
+        "email": "ataf@gmail.com"
+    }
 }
 ```
 
 ---
 
-## Status Code
+## Validation Error
 
-200 OK
+Status Code
 
----
-## Validation
-
-The registration endpoint validates incoming request data before calling the service layer.
-
-### Validation Rules
-
-- Name must be at least 2 characters.
-- Email must be a valid email address.
-- Password must be at least 8 characters.
-
-If validation fails, the API returns HTTP 400.
-
-## Validation Response
-
-The registration endpoint validates incoming request data before calling the service layer.
-
-If validation fails, the API returns HTTP 400.
-
-Example:
+400 Bad Request
 
 ```json
 {
-  "success": false,
-  "message": "Validation failed",
-  "errors": {
-    "email": [
-      "Please enter a valid email address"
-    ]
-  }
+    "success": false,
+    "message": "Validation failed",
+    "errors": {
+        "email": [
+            "Please enter a valid email address"
+        ]
+    }
 }
 ```
 
-## Future Improvements
+---
 
-The registration endpoint will include:
+## Duplicate Email
 
-- Request Validation
-- Email Validation
-- Password Strength Validation
-- Duplicate Email Check
-- Password Hashing
-- Database Storage
-- JWT Generation
+Status Code
+
+200 OK (Temporary)
+
+```json
+{
+    "success": false,
+    "message": "Email already exists."
+}
+```
+
+> Note:
+> Later this response will use HTTP 409 Conflict.
+
+---
+
+# Current Validation Rules
+
+Name
+
+- Required
+- Minimum 2 characters
+
+Email
+
+- Required
+- Must be a valid email address
+
+Password
+
+- Required
+- Minimum 8 characters
+
+---
+
+# Current Request Flow
+
+Client
+
+↓
+
+Route
+
+↓
+
+Controller
+
+↓
+
+Validation
+
+↓
+
+Service
+
+↓
+
+Business Rules
+
+↓
+
+Response
