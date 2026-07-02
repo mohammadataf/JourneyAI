@@ -48,6 +48,17 @@ Database integration and validation will be implemented in upcoming sprints.
 200 OK
 
 ---
+## Validation
+
+The registration endpoint validates incoming request data before calling the service layer.
+
+### Validation Rules
+
+- Name must be at least 2 characters.
+- Email must be a valid email address.
+- Password must be at least 8 characters.
+
+If validation fails, the API returns HTTP 400.
 
 ## Future Improvements
 

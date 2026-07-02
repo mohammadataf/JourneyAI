@@ -82,3 +82,21 @@ Security
 - SQL Injection
 - XSS
 - JWT Authentication
+
+## Validation Tests
+
+### Valid Request
+
+Status: ✅ Passed
+
+### Invalid Email
+
+Status: ✅ Passed
+
+### Short Password
+
+Status: ✅ Passed
+
+### Missing Name
+
+Status: ✅ Passed
