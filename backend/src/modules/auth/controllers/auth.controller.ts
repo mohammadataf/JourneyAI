@@ -19,7 +19,7 @@ export const registerUser = (req: Request, res: Response): void => {
     }
 
     
-    const result = registerUserService();
+   const result = registerUserService(validationResult.data);
 
     // Return successful response
     res.status(200).json(result);
