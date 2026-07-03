@@ -130,6 +130,56 @@ Status
 
 ---
 
+
+
+## Tested Features
+
+### Database Connection
+
+Status
+
+✅ Passed
+
+---
+
+### Prisma Client Generation
+
+Status
+
+✅ Passed
+
+---
+
+### Migration
+
+Status
+
+✅ Passed
+
+---
+
+### Duplicate Email Query
+
+Status
+
+✅ Passed
+
+---
+
+## Environment
+
+Database
+
+Neon PostgreSQL
+
+ORM
+
+Prisma ORM
+
+Backend
+
+Express + TypeScript
+
 # Current Testing Coverage
 
 Completed
