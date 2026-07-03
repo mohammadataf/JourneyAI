@@ -1,27 +1,19 @@
+import prisma from "../../../config/prisma";
+
 type RegisterUserData = {
     name: string;
     email: string;
     password: string;
 };
 
-const users = [
-    {
-        id: 1,
-        name: "Admin User",
-        email: "admin@journeyai.com",
-    },
-    {
-        id: 2,
-        name: "Mohammad Ataf",
-        email: "ataf@gmail.com",
-    },
-];
+export const registerUserService = async (user: RegisterUserData) => {
 
-export const registerUserService = (user: RegisterUserData) => {
-
-    const existingUser = users.find(
-        (currentUser) => currentUser.email === user.email
-    );
+    // Check if user already exists
+    const existingUser = await prisma.user.findUnique({
+        where: {
+            email: user.email,
+        },
+    });
 
     if (existingUser) {
         return {
