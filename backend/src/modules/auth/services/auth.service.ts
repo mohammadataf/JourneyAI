@@ -6,14 +6,16 @@ type RegisterUserData = {
     password: string;
 };
 
-export const registerUserService = async (user: RegisterUserData) => {
+export const registerUserService = async (
+    user: RegisterUserData
+) => {
 
-    // Check if user already exists
     const existingUser = await prisma.user.findUnique({
         where: {
             email: user.email,
         },
     });
+
 
     if (existingUser) {
         return {
@@ -22,12 +24,23 @@ export const registerUserService = async (user: RegisterUserData) => {
         };
     }
 
-    return {
-        success: true,
-        message: "Registration request processed successfully.",
+
+    const createdUser = await prisma.user.create({
         data: {
             name: user.name,
             email: user.email,
+            password: user.password,
+        },
+    });
+
+
+    return {
+        success: true,
+        message: "User registered successfully.",
+        data: {
+            id: createdUser.id,
+            name: createdUser.name,
+            email: createdUser.email,
         },
     };
 };
