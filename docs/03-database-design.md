@@ -2,19 +2,21 @@
 
 ## Database
 
-- PostgreSQL (Neon)
-
-## ORM
-
-- Prisma ORM
+PostgreSQL hosted on Neon
 
 ---
 
-## Current User Model
+## ORM
+
+Prisma ORM
+
+---
+
+# User Model
 
 | Field | Type | Constraint |
-|--------|------|------------|
-| id | String | Primary Key |
+|---|---|---|
+| id | String | Primary Key (CUID) |
 | name | String | Required |
 | email | String | Unique |
 | password | String | Required |
@@ -23,13 +25,9 @@
 
 ---
 
-## Current Authentication Flow
+# Current Database Flow
 
 Client
-
-↓
-
-Express
 
 ↓
 
@@ -37,11 +35,11 @@ Controller
 
 ↓
 
-Validation (Zod)
+Zod Validation
 
 ↓
 
-Authentication Service
+Service
 
 ↓
 
@@ -49,22 +47,48 @@ Prisma Client
 
 ↓
 
-PostgreSQL (Neon)
+PostgreSQL
 
 ---
 
-## Current Features
+# Implemented Queries
 
-- User Model
-- Database Connection
-- Duplicate Email Query
+## Find Existing User
+
+Used during registration:
+
+findUnique(email)
+
+Purpose:
+
+Prevent duplicate accounts.
 
 ---
 
-## Pending
+## Create User
 
-- Create User
-- Password Hashing
-- Login
-- JWT
-- Refresh Tokens
+Used during registration:
+
+create()
+
+Purpose:
+
+Store new users permanently.
+
+---
+
+# Completed
+
+- Database connection
+- Migration
+- User table
+- Duplicate email lookup
+- User creation
+
+---
+
+# Upcoming
+
+- Password hashing
+- Login queries
+- Refresh token storage
