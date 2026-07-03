@@ -1,11 +1,18 @@
-import { StrictMode } from 'react'
-import { createRoot } from 'react-dom/client'
-import './index.css'
-import App from './App.tsx'
+import { StrictMode } from "react";
+import { createRoot } from "react-dom/client";
+import { APIProvider } from "@vis.gl/react-google-maps";
+
+import "./index.css";
+import App from "./App.tsx";
 import "leaflet/dist/leaflet.css";
 
-createRoot(document.getElementById('root')!).render(
+createRoot(document.getElementById("root")!).render(
   <StrictMode>
-    <App />
-  </StrictMode>,
-)
+    <APIProvider
+      apiKey={import.meta.env.VITE_GOOGLE_MAPS_API_KEY}
+      libraries={["places"]}
+    >
+      <App />
+    </APIProvider>
+  </StrictMode>
+);

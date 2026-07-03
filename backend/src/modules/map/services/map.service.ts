@@ -26,8 +26,9 @@ export const getRouteService = async (
   start: Coordinate,
   end: Coordinate,
   vehicle: Vehicle = "driving-car"
-): Promise<Route> => {
+): Promise<Route[]> => {
   try {
+    
 
     const { data } = await axios.post(
       `https://api.openrouteservice.org/v2/directions/${vehicle}/geojson`,
@@ -36,6 +37,11 @@ export const getRouteService = async (
           [start.longitude, start.latitude],
           [end.longitude, end.latitude],
         ],
+        alternative_routes: { // These parameters tell ORS to try to compute up to top 3 distinct routes.
+          target_count: 3,
+          weight_factor: 1.6,
+          share_factor: 0.4,
+        },
       },
       {
         headers: {
@@ -44,28 +50,31 @@ export const getRouteService = async (
         },
       }
     );
+    console.log("vehicle type",vehicle)
+    console.log("len is",data.features.length);
 
-    const feature = data.features[0]; //  features is an array of multiple path b/w start and end point so for now we need only top path
-
-    return {
+     const routes: Route[] = data.features.map((feature: any) => ({
       // ORS returns [longitude, latitude]
       // Leaflet needs [latitude, longitude]
-      // so just chnage their position, map will pick one point coords at a time then change it then next
       coordinates: feature.geometry.coordinates.map(
         ([lon, lat]: [number, number]) => [lat, lon]
       ),
 
       distance: feature.properties.summary.distance,
       duration: feature.properties.summary.duration,
-    };
+    }));
+    
+    
+    return routes;
   } catch (error) {
-    console.error("Route Error:", error);
-
-    return {
-      coordinates: [],
-      distance: 0,
-      duration: 0,
-    };
+    // console.error("Route Error:", error);
+      if (axios.isAxiosError(error)) {
+        console.log(error.response?.data);
+      } else {
+        console.log(error);
+      }
+      console.log("done")
+    return [];
   }
 };
 

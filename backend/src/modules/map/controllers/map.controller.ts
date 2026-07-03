@@ -6,22 +6,15 @@
 import { Request, Response } from "express";
 import { getRouteService } from "../services/map.service";
 
-export const getRoute = async (
-  req: Request,
-  res: Response
-) => {
+export const getRoute = async (req: Request, res: Response) => {
   try {
     const { start, end, vehicle } = req.body;
 
-    const route = await getRouteService(
-      start,
-      end,
-      vehicle
-    );
+    const routes = await getRouteService(start,end,vehicle);
 
     res.status(200).json({
       success: true,
-      route,
+      routes,
     });
   } catch (error) {
     console.error("Controller Error:", error);

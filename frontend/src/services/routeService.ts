@@ -26,27 +26,25 @@ export const getRoute = async (
   start: Coordinate,
   end: Coordinate,
   vehicle: Vehicle = "driving-car"
-): Promise<Route> => {
+): Promise<Route[]> => {
   try {
+    
 
     const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
-    const { data } = await axios.post(
-      `${BACKEND_URL}/api/v1/map/route`,
+    const { data } = await axios.post(`${BACKEND_URL}/api/v1/map/route`,
       {
         start,
         end,
         vehicle,
       }
     );
+    
 
-    return data.route;
+    return data.routes;
+
   } catch (error) {
     console.error("Route Error:", error);
 
-    return {
-      coordinates: [],
-      distance: 0,
-      duration: 0,
-    };
+    return [];
   }
 };

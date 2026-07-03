@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import { searchPlaces, type Place } from "../../services/searchService";
 
 interface SearchBarProps {
-  onStartSelect: (place: Place) => void; // onStartSelect is actually pointing to setStart fun. like it is sayin i am expecting a fun that accepting place
+  onStartSelect: (place: Place) => void; // onStartSelect is actually pointing to setStart fun. like it is saying i am expecting a fun that accepting place
   onDestinationSelect: (place: Place) => void;
 }
 
@@ -13,6 +13,7 @@ const SearchBar = ({
   onStartSelect,
   onDestinationSelect,
 }: SearchBarProps) => {
+  
   const [startQuery, setStartQuery] = useState("");
   const [destinationQuery, setDestinationQuery] = useState("");
 
@@ -31,6 +32,7 @@ const SearchBar = ({
 
         try {
           setLoading(true);
+          
 
           const results = await searchPlaces(startQuery);
 
@@ -58,6 +60,7 @@ const SearchBar = ({
           setLoading(true);
 
           const results = await searchPlaces(destinationQuery);
+          console.log("Results:", results);
 
           setDestinationPlaces(results);
         } catch (error) {
@@ -74,15 +77,19 @@ const SearchBar = ({
     <div
       style={{
         position: "absolute",
-        top: 20,
+        top: 1,
         left: "50%",
         transform: "translateX(-50%)",
         zIndex: 1000,
         background: "white",
-        padding: "15px",
+        padding: "3px",
         borderRadius: "10px",
         boxShadow: "0 2px 10px rgba(0,0,0,0.2)",
-        width: "500px",
+        width: "1000px",
+        display:"flex",
+        // justifyContent:"center",
+        alignItems:"center"
+         
       }}
     >
       {/* From Input */}
@@ -93,8 +100,8 @@ const SearchBar = ({
         onChange={(e) => setStartQuery(e.target.value)}
         style={{
           width: "94%",
-          padding: "10px",
-          marginBottom: "10px",
+          padding: "8px",
+          // marginBottom: "10px",
         }}
       />
 
@@ -102,8 +109,9 @@ const SearchBar = ({
         <div
           key={place.place_id}
           onClick={() => {
-            setStartQuery(place.display_name);
             setStartPlaces([]);
+            setStartQuery(place.display_name);
+             
             onStartSelect(place);
           }}
           style={{
@@ -124,8 +132,8 @@ const SearchBar = ({
         onChange={(e) => setDestinationQuery(e.target.value)}
         style={{
           width: "94%",
-          padding: "10px",
-          marginTop: "10px",
+          padding: "8px",
+          // marginTop: "10px",
         }}
       />
 

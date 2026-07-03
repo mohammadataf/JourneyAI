@@ -10,21 +10,21 @@ interface RouteInfoCardProps {
 }
 
 const RouteInfoCard = ({ route }: RouteInfoCardProps) => {
-  const distance = (route.distance / 1000).toFixed(1);
-  const duration = Math.ceil(route.duration / 60);
+  const distance = (route.distance / 1000).toFixed(2);
+  const duration = Math.ceil(route.duration / 60).toFixed(1);
 
   return (
     <div
       style={{
         position: "absolute",
         bottom: 20,
-        left: 20,
+        left: 4,
         zIndex: 1000,
         background: "white",
-        padding: "15px",
+        padding: "12px",
         borderRadius: "10px",
         boxShadow: "0 2px 10px rgba(0,0,0,0.2)",
-        minWidth: "180px",
+        minWidth: "150px",
       }}
     >
       <h3>Route Info</h3>

@@ -1,5 +1,10 @@
+/*
+  This component moves the Google Map to the selected destination
+  whenever the destination changes.
+*/
+
 import { useEffect } from "react";
-import { useMap } from "react-leaflet";
+import { useMap } from "@vis.gl/react-google-maps";
 
 interface FlyToLocationProps {
   latitude: number;
@@ -13,11 +18,15 @@ const FlyToLocation = ({
   const map = useMap();
 
   useEffect(() => {
-    map.flyTo([latitude, longitude], 15, {
-      animate: true,
-      duration: 2,
+    if (!map) return;
+
+    map.panTo({
+      lat: latitude,
+      lng: longitude,
     });
-  }, [latitude, longitude, map]);
+
+    map.setZoom(15);
+  }, [map, latitude, longitude]);
 
   return null;
 };

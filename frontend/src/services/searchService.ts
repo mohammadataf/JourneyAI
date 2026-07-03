@@ -49,3 +49,61 @@ export const searchPlaces = async (query: string): Promise<Place[]> => {
     return [];
   }
 };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// google map search
+
+// This file handles all search-related API calls. It sends the user's search
+// query to our backend, which calls Google Places API and returns the results.
+
+// export interface Place {
+//   place_id: string;
+//   display_name: string;
+//   lat: string;
+//   lon: string;
+// }
+
+// export const searchPlaces = async (
+//   query: string
+// ): Promise<Place[]> => {
+//   if (!query.trim()) return [];
+
+//   try {
+   
+//     const response = await fetch(
+//       "http://localhost:5000/api/v1/search",
+//       {
+//         method: "POST",
+//         headers: {
+//           "Content-Type": "application/json",
+//         },
+//         body: JSON.stringify({
+//           query,
+//         }),
+//       }
+//     );
+
+//     if (!response.ok) {
+//       throw new Error("Failed to fetch places");
+//     }
+
+//     const data = await response.json();
+
+//     return data.places;
+//   } catch (error) {
+//     console.error("Search Error:", error);
+//     return [];
+//   }
+// };

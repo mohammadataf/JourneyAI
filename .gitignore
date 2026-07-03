@@ -1,3 +1,25 @@
+
+# ==========================
+# JourneyAI Routing Data
+# ==========================
+
+routing-engine/data/*
+!routing-engine/data/.gitkeep
+
+# Optional generated graph files (later)
+routing-engine/graphs/
+routing-engine/cache/
+
+
+
+
+
+
+
+
+
+
+
 # Logs
 logs
 *.log
