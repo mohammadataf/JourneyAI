@@ -1,62 +1,49 @@
-# Testing
+# Authentication Testing
 
-## Authentication Database Tests
 
-Testing Tool:
+## Registration Tests
 
-Thunder Client
 
-Database:
+### Valid Registration
 
-Neon PostgreSQL
+Expected:
 
----
-
-## User Registration
+- User created
+- Password hashed
+- User stored in PostgreSQL
 
 Status:
 
 PASSED
 
+
 ---
 
-## Test Case 1
-
-Create new user
+### Duplicate Email Test
 
 Expected:
 
-- User saved in PostgreSQL
-- User data returned
+Existing email rejected.
 
-Result:
-
-PASSED
-
----
-
-## Test Case 2
-
-Register same email again
-
-Expected:
-
-- Duplicate email detected
-
-Result:
+Status:
 
 PASSED
 
+
 ---
 
-## Database Verification
+### Password Security Test
 
-Method:
+Input:
 
-Temporary Prisma query script
+12345678
 
-Result:
 
-Users successfully retrieved from PostgreSQL.
+Database Value:
+
+bcrypt hash
+
+
+Status:
 
 PASSED

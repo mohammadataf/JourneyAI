@@ -1,139 +1,45 @@
-# API Design
+# POST /api/v1/auth/register
 
-# Base URL
 
-http://localhost:5000/api/v1
+## Purpose
 
----
+Create a new user account.
 
-# Authentication Module
-
-## POST /auth/register
-
-### Description
-
-Registers a new user.
-
-Incoming requests are validated before reaching the service layer.
-
-Duplicate email addresses are rejected.
-
-(Currently duplicate checking uses an in-memory array. It will later be replaced by PostgreSQL.)
-
----
 
 ## Request
 
-```json
 {
-    "name": "Mohammad Ataf",
-    "email": "ataf@gmail.com",
-    "password": "12345678"
+    "name":"John Doe",
+    "email":"john@gmail.com",
+    "password":"12345678"
 }
-```
 
----
 
-## Successful Response
+## Processing Steps
 
-Status Code
+1. Validate request data
 
-200 OK
+2. Check duplicate email
 
-```json
+3. Hash password using bcrypt
+
+4. Store user in PostgreSQL
+
+
+## Success Response
+
+
 {
-    "success": true,
-    "message": "Registration request processed successfully.",
-    "data": {
-        "name": "Mohammad Ataf",
-        "email": "ataf@gmail.com"
+    "success":true,
+    "message":"User registered successfully",
+    "data":{
+        "id":"user_id",
+        "name":"John Doe",
+        "email":"john@gmail.com"
     }
 }
-```
 
----
 
-## Validation Error
+Security:
 
-Status Code
-
-400 Bad Request
-
-```json
-{
-    "success": false,
-    "message": "Validation failed",
-    "errors": {
-        "email": [
-            "Please enter a valid email address"
-        ]
-    }
-}
-```
-
----
-
-## Duplicate Email
-
-Status Code
-
-200 OK (Temporary)
-
-```json
-{
-    "success": false,
-    "message": "Email already exists."
-}
-```
-
-> Note:
-> Later this response will use HTTP 409 Conflict.
-
----
-
-# Current Validation Rules
-
-Name
-
-- Required
-- Minimum 2 characters
-
-Email
-
-- Required
-- Must be a valid email address
-
-Password
-
-- Required
-- Minimum 8 characters
-
----
-
-# Current Request Flow
-
-Client
-
-↓
-
-Route
-
-↓
-
-Controller
-
-↓
-
-Validation
-
-↓
-
-Service
-
-↓
-
-Business Rules
-
-↓
-
-Response
+Password is never returned in API responses.

@@ -1,94 +1,61 @@
-# Database Design
-
-## Database
-
-PostgreSQL hosted on Neon
-
----
-
-## ORM
-
-Prisma ORM
-
----
-
 # User Model
 
-| Field | Type | Constraint |
+Database:
+
+PostgreSQL (Neon)
+
+ORM:
+
+Prisma
+
+
+## Fields
+
+| Field | Type | Description |
 |---|---|---|
-| id | String | Primary Key (CUID) |
-| name | String | Required |
-| email | String | Unique |
-| password | String | Required |
-| createdAt | DateTime | Auto Generated |
-| updatedAt | DateTime | Auto Updated |
+| id | String | Unique user identifier |
+| name | String | User name |
+| email | String | Unique email |
+| password | String | Hashed password |
+| createdAt | DateTime | Account creation time |
+| updatedAt | DateTime | Last update time |
+
 
 ---
 
-# Current Database Flow
+# Password Storage
 
-Client
+Passwords are never stored as plain text.
 
-↓
+Process:
 
-Controller
-
-↓
-
-Zod Validation
+Plain Password
 
 ↓
 
-Service
+bcrypt Hash
 
 ↓
 
-Prisma Client
+Hashed Password Stored
 
-↓
 
-PostgreSQL
+Example:
 
----
+Input:
 
-# Implemented Queries
+password123
 
-## Find Existing User
+Stored:
 
-Used during registration:
+$2b$10$............
 
-findUnique(email)
-
-Purpose:
-
-Prevent duplicate accounts.
-
----
-
-## Create User
-
-Used during registration:
-
-create()
-
-Purpose:
-
-Store new users permanently.
 
 ---
 
 # Completed
 
-- Database connection
-- Migration
 - User table
-- Duplicate email lookup
-- User creation
-
----
-
-# Upcoming
-
+- Unique email constraint
 - Password hashing
-- Login queries
-- Refresh token storage
+- User persistence
