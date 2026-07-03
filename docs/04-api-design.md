@@ -1,45 +1,82 @@
-# POST /api/v1/auth/register
-
+# POST /api/v1/auth/login
 
 ## Purpose
 
-Create a new user account.
+Authenticate an existing user.
 
+---
 
 ## Request
 
+```json
 {
-    "name":"John Doe",
-    "email":"john@gmail.com",
-    "password":"12345678"
+    "email": "user@gmail.com",
+    "password": "12345678"
 }
+```
+
+---
+
+## Flow
+
+Client
+
+↓
+
+Controller
+
+↓
+
+Zod Validation
+
+↓
+
+Auth Service
+
+↓
+
+Find User By Email
+
+↓
+
+bcrypt Password Compare
+
+↓
+
+Return Authentication Result
 
 
-## Processing Steps
-
-1. Validate request data
-
-2. Check duplicate email
-
-3. Hash password using bcrypt
-
-4. Store user in PostgreSQL
-
+---
 
 ## Success Response
 
-
+```json
 {
-    "success":true,
-    "message":"User registered successfully",
-    "data":{
-        "id":"user_id",
-        "name":"John Doe",
-        "email":"john@gmail.com"
+    "success": true,
+    "message": "Login successful",
+    "data": {
+        "id": "user_id",
+        "name": "User",
+        "email": "user@gmail.com"
     }
 }
+```
 
+---
 
-Security:
+## Failure Response
 
-Password is never returned in API responses.
+```json
+{
+    "success": false,
+    "message": "Invalid email or password"
+}
+```
+
+---
+
+## Security Notes
+
+- Plain passwords are never compared manually.
+- bcrypt.compare() verifies passwords.
+- Same error response is used for invalid email/password to prevent user enumeration.

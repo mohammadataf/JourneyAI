@@ -1,16 +1,14 @@
-# Authentication Testing
+# Login Testing
 
+## Test Case 1
 
-## Registration Tests
-
-
-### Valid Registration
+Correct Credentials
 
 Expected:
 
-- User created
-- Password hashed
-- User stored in PostgreSQL
+- User found
+- Password matched
+- Login successful
 
 Status:
 
@@ -19,11 +17,13 @@ PASSED
 
 ---
 
-### Duplicate Email Test
+## Test Case 2
+
+Wrong Password
 
 Expected:
 
-Existing email rejected.
+- Login rejected
 
 Status:
 
@@ -32,17 +32,13 @@ PASSED
 
 ---
 
-### Password Security Test
+## Test Case 3
 
-Input:
+Unknown Email
 
-12345678
+Expected:
 
-
-Database Value:
-
-bcrypt hash
-
+- Login rejected
 
 Status:
 
