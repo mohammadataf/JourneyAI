@@ -177,9 +177,62 @@ PASSED
 
 ---
 
-# Upcoming Tests
+# JWT Middleware Testing
 
 
-- JWT middleware tests
-- Protected route tests
-- Refresh token tests
+## Test 1
+
+Request:
+
+GET /api/v1/auth/me
+
+
+With:
+
+Valid Bearer Token
+
+
+Expected:
+
+Access granted
+
+
+Status:
+
+PASSED
+
+
+
+---
+
+## Test 2
+
+Request without token
+
+
+Expected:
+
+401 Unauthorized
+
+
+Status:
+
+PASSED
+
+
+
+---
+
+## Test 3
+
+Invalid token
+
+
+Expected:
+
+Request rejected
+
+
+Status:
+
+PASSED

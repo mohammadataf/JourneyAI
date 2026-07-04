@@ -253,3 +253,74 @@ Bearer jwt_token
 - Validate all input
 - Hash passwords before storage
 - Use JWT for authentication
+# GET /api/v1/auth/me
+
+
+## Purpose
+
+
+Test authenticated user access.
+
+
+Requires valid JWT token.
+
+
+---
+
+## Headers
+
+
+Authorization:
+
+
+Bearer <jwt_token>
+
+
+---
+
+## Success Response
+
+
+```json
+{
+    "success": true,
+    "message": "Protected route accessed",
+    "user": {
+        "id": "user_id"
+    }
+}
+```
+
+
+---
+
+## Missing Token
+
+
+```json
+{
+    "success": false,
+    "message": "Authentication token missing"
+}
+```
+
+
+---
+
+## Invalid Token
+
+
+```json
+{
+    "success": false,
+    "message": "Invalid or expired token"
+}
+```
+
+
+---
+
+## Security
+
+
+Only requests containing valid JWT tokens can access protected routes.

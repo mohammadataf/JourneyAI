@@ -288,3 +288,73 @@ Access granted
 - Type safety
 - Secure authentication
 - Environment based configuration
+
+
+# Protected Route Architecture
+
+
+JourneyAI protects private APIs using JWT middleware.
+
+
+## Flow
+
+
+Client Request
+
+↓
+
+Authorization Header
+
+↓
+
+Authentication Middleware
+
+↓
+
+Extract JWT Token
+
+↓
+
+Verify Token Signature
+
+↓
+
+Attach User To Request
+
+↓
+
+Controller
+
+
+
+---
+
+## Middleware Responsibility
+
+
+auth.middleware.ts
+
+
+Handles:
+
+
+- Reading Authorization header
+- Extracting Bearer token
+- Verifying JWT
+- Adding authenticated user data to request
+
+
+---
+
+## Request Extension
+
+
+Express Request object is extended:
+
+
+req.user = {
+    id: userId
+}
+
+
+This allows controllers to access authenticated user information.
