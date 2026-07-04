@@ -18,11 +18,22 @@
 
     "resolveJsonModule": true,
 
-    "types": ["node"],
-
+    "types": [
+      "node"
+    ],
+"typeRoots": [
+    "./src/types",
+    "./node_modules/@types"
+],
     "sourceMap": true
   },
 
-  "include": ["src"],
-  "exclude": ["node_modules", "dist"]
+  "include": [
+    "src"
+  ],
+
+  "exclude": [
+    "node_modules",
+    "dist"
+  ]
 }

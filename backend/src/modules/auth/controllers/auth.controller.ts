@@ -5,6 +5,7 @@ import { registerUserService } from "../services/auth.service";
 import { loginSchema } from "../validators/login.validator";
 import { loginUserService } from "../services/auth.service";
 
+
 export const registerUser = async (
     req: Request,
     res: Response
@@ -60,4 +61,21 @@ export const loginUser = async (
 
 
     res.status(200).json(result);
+};
+
+export const getCurrentUser = (
+    req: Request,
+    res: Response
+): void => {
+
+    res.status(200).json({
+
+        success:true,
+
+        message:"Protected route accessed",
+
+        user:req.user
+
+    });
+
 };
