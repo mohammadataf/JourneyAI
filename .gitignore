@@ -9,6 +9,7 @@ routing-engine/data/*
 # Optional generated graph files (later)
 routing-engine/graphs/
 routing-engine/cache/
+routing-engine/graph-cache/
 
 
 

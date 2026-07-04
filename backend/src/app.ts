@@ -1,6 +1,7 @@
 import authRouter from "./modules/auth/routes/auth.routes";
 import mapRouter from "./modules/map/routes/map.route";
 import searchRoute from "./modules/map/routes/search.route";
+import routeRoutes from "./modules/map/routes/route.routes"
 
  
 import express from "express";
@@ -22,6 +23,7 @@ app.use(morgan("dev"));
 app.use("/api/v1/auth", authRouter);
 app.use("/api/v1/map", mapRouter);
 app.use("/api/v1/search", searchRoute);
+app.use("/api/route", routeRoutes);
 
 /**
  * Health Check Route
