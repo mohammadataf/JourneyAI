@@ -324,3 +324,94 @@ Bearer <jwt_token>
 
 
 Only requests containing valid JWT tokens can access protected routes.
+
+
+
+
+# GET /api/v1/auth/me
+
+
+## Purpose
+
+Fetch currently authenticated user profile.
+
+
+Requires:
+
+Valid JWT access token.
+
+
+---
+
+## Header
+
+
+Authorization:
+
+Bearer <jwt_token>
+
+
+---
+
+## Processing Flow
+
+
+Request
+
+↓
+
+Authentication Middleware
+
+↓
+
+Verify JWT
+
+↓
+
+Extract User ID
+
+↓
+
+Fetch User From Database
+
+↓
+
+Return User Profile
+
+
+
+---
+
+## Success Response
+
+
+```json
+{
+    "success": true,
+    "message": "User fetched successfully",
+    "data": {
+        "id": "user_id",
+        "name": "John Doe",
+        "email": "john@gmail.com",
+        "createdAt": "date"
+    }
+}
+```
+
+
+---
+
+## Security
+
+
+Returned:
+
+- id
+- name
+- email
+
+
+Never returned:
+
+- password
+```

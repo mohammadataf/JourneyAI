@@ -236,3 +236,66 @@ Request rejected
 Status:
 
 PASSED
+
+
+
+
+# Current User API Testing
+
+
+Endpoint:
+
+GET /api/v1/auth/me
+
+
+---
+
+## Test 1
+
+Valid JWT Token
+
+
+Expected:
+
+- Token verified
+- User fetched from database
+- Profile returned
+
+
+Status:
+
+PASSED
+
+
+---
+
+## Test 2
+
+Missing Token
+
+
+Expected:
+
+401 Unauthorized
+
+
+Status:
+
+PASSED
+
+
+---
+
+## Test 3
+
+Invalid Token
+
+
+Expected:
+
+Request rejected
+
+
+Status:
+
+PASSED

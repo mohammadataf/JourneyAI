@@ -274,3 +274,48 @@ Planned:
 
 - Refresh token rotation
 - Session management
+
+
+
+# User Profile Query
+
+
+Used by:
+
+GET /auth/me
+
+
+Purpose:
+
+Retrieve authenticated user details.
+
+
+---
+
+## Prisma Query
+
+
+findUnique()
+
+
+Selection:
+
+- id
+- name
+- email
+- createdAt
+
+
+Sensitive fields excluded:
+
+- password
+
+
+---
+
+# Security Principle
+
+
+Only required database fields are selected.
+
+Sensitive information is never exposed through APIs.
