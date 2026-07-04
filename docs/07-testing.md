@@ -1,45 +1,185 @@
-# Login Testing
-
-## Test Case 1
-
-Correct Credentials
-
-Expected:
-
-- User found
-- Password matched
-- Login successful
-
-Status:
-
-PASSED
+# JourneyAI Testing Documentation
 
 
----
+## Testing Tools
 
-## Test Case 2
 
-Wrong Password
+API Testing:
 
-Expected:
+Thunder Client
 
-- Login rejected
 
-Status:
+Database Testing:
 
-PASSED
+Prisma Queries / Neon Dashboard
+
 
 
 ---
 
-## Test Case 3
+# Authentication Testing
 
-Unknown Email
+
+
+# Register API
+
+
+Endpoint:
+
+
+POST /api/v1/auth/register
+
+
+
+---
+
+## Valid Registration
+
+
+Input:
+
+
+name
+
+email
+
+password
+
 
 Expected:
 
-- Login rejected
+- Validate request
+- Hash password
+- Store user
+
 
 Status:
 
 PASSED
+
+
+
+---
+
+## Invalid Email Test
+
+
+Expected:
+
+Validation error
+
+
+Status:
+
+PASSED
+
+
+
+---
+
+## Duplicate Email Test
+
+
+Expected:
+
+Existing user rejected
+
+
+Status:
+
+PASSED
+
+
+
+---
+
+# Login API
+
+
+Endpoint:
+
+
+POST /api/v1/auth/login
+
+
+
+---
+
+## Correct Credentials
+
+
+Expected:
+
+- Find user
+- Compare password
+- Generate JWT
+
+
+Status:
+
+PASSED
+
+
+
+---
+
+## Wrong Password
+
+
+Expected:
+
+Reject login
+
+
+Status:
+
+PASSED
+
+
+
+---
+
+# Database Tests
+
+
+Completed:
+
+
+- Prisma connection test
+- User creation test
+- User fetching test
+
+
+Status:
+
+PASSED
+
+
+
+---
+
+# Security Tests
+
+
+Completed:
+
+
+Password Hashing:
+
+PASSED
+
+
+JWT Generation:
+
+PASSED
+
+
+
+---
+
+# Upcoming Tests
+
+
+- JWT middleware tests
+- Protected route tests
+- Refresh token tests

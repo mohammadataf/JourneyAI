@@ -1,22 +1,81 @@
-# Authentication Architecture
+# JourneyAI System Architecture
 
-JourneyAI uses a layered authentication architecture.
 
-## Flow
+## Architecture Style
+
+JourneyAI follows:
+
+- Layered architecture
+- Feature based folder structure
+- Separation of concerns
+
+
+---
+
+# Backend Stack
+
+Runtime:
+
+Node.js
+
+
+Framework:
+
+Express.js
+
+
+Language:
+
+TypeScript
+
+
+Database:
+
+PostgreSQL (Neon)
+
+
+ORM:
+
+Prisma
+
+
+Validation:
+
+Zod
+
+
+Authentication:
+
+JWT
+
+
+Password Security:
+
+bcrypt
+
+
+---
+
+# Backend Request Flow
+
 
 Client
 
 ↓
 
-Express Route
+Express Server
 
 ↓
 
-Controller
+Routes
 
 ↓
 
-Validation Layer (Zod)
+Controllers
+
+↓
+
+Validation Layer
 
 ↓
 
@@ -24,59 +83,208 @@ Service Layer
 
 ↓
 
-Security Layer (bcrypt)
+Database Layer
 
 ↓
 
-Prisma ORM
+Response
 
-↓
-
-PostgreSQL Database
 
 
 ---
 
-## Responsibilities
+# Folder Structure
 
 
-### Controller
+backend/
 
-Handles:
+src/
 
-- HTTP request
-- HTTP response
-- Validation result
+config/
+
+prisma.ts
 
 
-### Validator
+modules/
+
+auth/
+
+controllers/
+
+routes/
+
+services/
+
+validators/
+
+
+utils/
+
+
+app.ts
+
+server.ts
+
+
+---
+
+# Layer Responsibilities
+
+
+## Routes
+
+Responsibilities:
+
+- Define API endpoints
+- Connect URLs with controllers
+
+
+Routes contain no business logic.
+
+
+---
+
+
+## Controllers
+
+
+Responsibilities:
+
+- Handle Request
+- Validate input
+- Call services
+- Return Response
+
+
+---
+
+
+## Validators
+
 
 Technology:
 
 Zod
 
+
 Responsibilities:
 
-- Validate incoming user data
-- Prevent invalid data from reaching services
+- Validate incoming data
+- Prevent invalid data reaching services
 
 
-### Service
+---
 
-Contains business logic:
 
-- Duplicate email checking
+## Services
+
+
+Responsibilities:
+
+Business logic:
+
+- Duplicate checking
 - Password hashing
-- User creation
+- Database operations
+- Token generation
 
 
-### Database Layer
+---
 
-Technology:
 
-Prisma ORM
+## Database Layer
 
-Responsibilities:
 
-- Database queries
-- Type-safe communication with PostgreSQL
+Prisma handles:
+
+- Queries
+- Type safety
+- Migrations
+
+
+---
+
+# Authentication Flow
+
+
+Register:
+
+User Data
+
+↓
+
+Validation
+
+↓
+
+Duplicate Email Check
+
+↓
+
+bcrypt Hash
+
+↓
+
+Save User
+
+
+---
+
+
+Login:
+
+Credentials
+
+↓
+
+Find User
+
+↓
+
+bcrypt Compare
+
+↓
+
+Generate JWT
+
+↓
+
+Return Token
+
+
+---
+
+# JWT Flow
+
+
+Client receives token
+
+↓
+
+Stores token
+
+↓
+
+Sends:
+
+Authorization: Bearer token
+
+↓
+
+Backend verifies JWT
+
+↓
+
+Access granted
+
+
+---
+
+# Design Principles
+
+
+- Thin controllers
+- Reusable services
+- Type safety
+- Secure authentication
+- Environment based configuration

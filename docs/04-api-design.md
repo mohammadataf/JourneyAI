@@ -1,29 +1,72 @@
-# POST /api/v1/auth/login
+# JourneyAI API Design
+
+
+## Overview
+
+JourneyAI exposes REST APIs using Express.js.
+
+All APIs follow:
+
+- JSON request format
+- JSON response format
+- Versioned routes
+
+
+---
+
+# Base URL
+
+
+Development:
+
+
+http://localhost:5000/api/v1
+
+
+
+---
+
+# Authentication APIs
+
+
+
+# Register User
+
+
+Endpoint:
+
+
+POST /auth/register
+
+
+---
 
 ## Purpose
 
-Authenticate an existing user.
+
+Create a new user account.
+
 
 ---
 
-## Request
+## Request Body
+
 
 ```json
 {
-    "email": "user@gmail.com",
-    "password": "12345678"
+    "name":"John Doe",
+    "email":"john@gmail.com",
+    "password":"12345678"
 }
 ```
 
+
 ---
 
-## Flow
+## Processing Flow
 
-Client
 
-↓
-
-Controller
+Request
 
 ↓
 
@@ -31,52 +74,182 @@ Zod Validation
 
 ↓
 
-Auth Service
+Check Duplicate Email
 
 ↓
 
-Find User By Email
+Hash Password
 
 ↓
 
-bcrypt Password Compare
+Save User
 
 ↓
 
-Return Authentication Result
+Return Response
+
 
 
 ---
 
 ## Success Response
 
+
 ```json
 {
-    "success": true,
-    "message": "Login successful",
-    "data": {
-        "id": "user_id",
-        "name": "User",
-        "email": "user@gmail.com"
+    "success":true,
+    "message":"User registered successfully",
+    "data":{
+        "id":"user_id",
+        "name":"John Doe",
+        "email":"john@gmail.com"
     }
 }
 ```
 
+
 ---
 
-## Failure Response
+## Validation Error
+
 
 ```json
 {
-    "success": false,
-    "message": "Invalid email or password"
+    "success":false,
+    "message":"Validation failed"
 }
 ```
 
+
 ---
 
-## Security Notes
+## Duplicate Email
 
-- Plain passwords are never compared manually.
-- bcrypt.compare() verifies passwords.
-- Same error response is used for invalid email/password to prevent user enumeration.
+
+```json
+{
+    "success":false,
+    "message":"Email already exists"
+}
+```
+
+
+
+---
+
+
+# Login User
+
+
+Endpoint:
+
+
+POST /auth/login
+
+
+---
+
+## Purpose
+
+
+Authenticate user and issue JWT token.
+
+
+---
+
+## Request Body
+
+
+```json
+{
+    "email":"john@gmail.com",
+    "password":"12345678"
+}
+```
+
+
+---
+
+## Processing Flow
+
+
+Request
+
+↓
+
+Validation
+
+↓
+
+Find User
+
+↓
+
+bcrypt.compare()
+
+↓
+
+Generate JWT
+
+↓
+
+Return Token
+
+
+
+---
+
+## Success Response
+
+
+```json
+{
+    "success":true,
+    "message":"Login successful",
+    "token":"jwt_token",
+    "data":{
+        "id":"user_id",
+        "name":"John",
+        "email":"john@gmail.com"
+    }
+}
+```
+
+
+---
+
+## Failed Login
+
+
+```json
+{
+    "success":false,
+    "message":"Invalid email or password"
+}
+```
+
+
+---
+
+# Authentication Header
+
+
+Protected routes use:
+
+
+Authorization:
+
+
+Bearer jwt_token
+
+
+
+---
+
+# Security Rules
+
+
+- Never return passwords
+- Validate all input
+- Hash passwords before storage
+- Use JWT for authentication
