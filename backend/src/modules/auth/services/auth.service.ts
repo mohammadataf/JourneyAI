@@ -1,5 +1,6 @@
 import bcrypt from "bcrypt";
 import prisma from "../../../config/prisma";
+import { generateToken } from "../../../utils/jwt";
 
 
 type RegisterUserData = {
@@ -88,13 +89,24 @@ export const loginUserService = async (
     }
 
 
-    return {
-        success: true,
-        message: "Login successful",
-        data: {
-            id: user.id,
-            name: user.name,
-            email: user.email,
-        },
-    };
+  const token = generateToken(user.id);
+
+
+return {
+
+    success: true,
+
+    message: "Login successful",
+
+    token,
+
+    data: {
+
+        id: user.id,
+
+        name: user.name,
+
+        email: user.email,
+    },
+};
 };
