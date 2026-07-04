@@ -110,3 +110,55 @@ return {
     },
 };
 };
+
+export const getCurrentUserService = async (
+    userId: string
+) => {
+
+
+    const user = await prisma.user.findUnique({
+
+        where: {
+            id: userId,
+        },
+
+
+        select: {
+
+            id: true,
+
+            name: true,
+
+            email: true,
+
+            createdAt: true,
+
+        },
+
+    });
+
+
+    if (!user) {
+
+        return {
+
+            success: false,
+
+            message: "User not found",
+
+        };
+
+    }
+
+
+    return {
+
+        success: true,
+
+        message: "User fetched successfully",
+
+        data: user,
+
+    };
+
+};
