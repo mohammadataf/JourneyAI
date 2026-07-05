@@ -1,18 +1,23 @@
 import { Request, Response } from "express";
 import { getRoute } from "../services/graphhopper.service";
 
+/*
+  This file receives the request from the route,
+  calls the service, and sends the response back.
+*/
+
 export async function routeController(req: Request, res: Response) {
   try {
-    const { startLat, startLng, endLat, endLng } = req.query;
+    const { start,end,vehicle} = req.body;
+    console.log("hello")
 
-    const route = await getRoute(
-      Number(startLat),
-      Number(startLng),
-      Number(endLat),
-      Number(endLng)
-    );
+    const routes = await getRoute(start,end,vehicle);
 
-    res.json(route);
+    res.status(200).json({
+      success:true,
+      routes
+
+    });
   } catch (error) {
     console.error(error);
     res.status(500).json({

@@ -31,15 +31,15 @@ export const getRoute = async (
     
 
     const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
-    const { data } = await axios.post(`${BACKEND_URL}/api/v1/map/route`,
+    const { data } = await axios.post(`${BACKEND_URL}/api/pois`,
       {
         start,
         end,
-        vehicle,
+        theme:"scenic",
       }
     );
     
-
+    console.log("data is",data);
     return data.routes;
 
   } catch (error) {
