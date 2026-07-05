@@ -361,3 +361,60 @@ Security Checks:
 - Password never returned
 - JWT required for protected routes
 - Invalid tokens rejected
+
+
+
+
+
+
+# Sprint 15 Authentication Testing
+
+
+## Login
+
+Expected:
+
+- Access token generated
+- Refresh token generated
+- Refresh token saved in database
+
+
+## Refresh Token
+
+Input:
+
+Valid refresh token
+
+
+Expected:
+
+200 OK
+
+New access token generated
+
+
+
+Invalid token:
+
+Expected:
+
+401 Unauthorized
+
+
+
+## Logout
+
+Expected:
+
+- Refresh token deleted
+- Same token cannot be reused
+
+
+Security checks:
+
+Passed:
+
+✓ Access token expiry added
+✓ Refresh tokens stored
+✓ Database session validation
+✓ Logout invalidates sessions

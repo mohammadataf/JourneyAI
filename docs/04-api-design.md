@@ -460,3 +460,96 @@ Controller
 Service
 ↓
 Response
+
+
+
+
+# Authentication APIs
+
+
+## Register
+
+POST
+
+/api/v1/auth/register
+
+
+Creates a new user account.
+
+
+Response:
+
+201 Created
+
+
+
+## Login
+
+POST
+
+/api/v1/auth/login
+
+
+Returns:
+
+- accessToken
+- refreshToken
+
+
+Access Token:
+
+Short lived token used for API authorization.
+
+
+Refresh Token:
+
+Long lived token used for creating new access tokens.
+
+
+
+## Current User
+
+GET
+
+/api/v1/auth/me
+
+
+Headers:
+
+Authorization: Bearer accessToken
+
+
+Returns logged in user.
+
+
+
+## Refresh Token
+
+POST
+
+/api/v1/auth/refresh
+
+
+Body:
+
+{
+ "refreshToken":"token"
+}
+
+
+Returns:
+
+New accessToken
+
+
+
+## Logout
+
+POST
+
+/api/v1/auth/logout
+
+
+Deletes refresh token from database.
+
+Invalidates user session.

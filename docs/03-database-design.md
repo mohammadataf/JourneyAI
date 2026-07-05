@@ -319,3 +319,53 @@ Sensitive fields excluded:
 Only required database fields are selected.
 
 Sensitive information is never exposed through APIs.
+
+
+
+# Authentication Database Models
+
+
+## User
+
+Stores JourneyAI users.
+
+Fields:
+
+- id
+- name
+- email
+- password
+- createdAt
+- updatedAt
+
+
+## RefreshToken
+
+Stores active user sessions.
+
+Relationship:
+
+User
+1
+|
+*
+RefreshToken
+
+
+Fields:
+
+- id
+- token
+- userId
+- createdAt
+
+
+Purpose:
+
+Allows:
+- multiple device sessions
+- secure logout
+- refresh token validation
+
+
+Deleting a user removes refresh tokens automatically using cascade delete.
