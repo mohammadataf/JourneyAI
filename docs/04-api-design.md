@@ -415,3 +415,48 @@ Never returned:
 
 - password
 ```
+
+
+
+# Authentication Error Responses
+
+JourneyAI uses centralized error handling.
+
+All API failures follow a consistent response format.
+
+Example:
+
+{
+  "success": false,
+  "message": "Error message"
+}
+
+
+## Auth Error Codes
+
+| Scenario | Status Code |
+|---|---|
+| Duplicate email registration | 409 Conflict |
+| Invalid login credentials | 401 Unauthorized |
+| Missing JWT token | 401 Unauthorized |
+| Invalid JWT token | 401 Unauthorized |
+| Server error | 500 Internal Server Error |
+
+
+## Protected Route Flow
+
+Client
+↓
+Authorization Header
+↓
+JWT Middleware
+↓
+Verify Token
+↓
+Attach user id to request
+↓
+Controller
+↓
+Service
+↓
+Response

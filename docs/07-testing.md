@@ -299,3 +299,65 @@ Request rejected
 Status:
 
 PASSED
+
+
+
+
+
+# Sprint 14 Authentication Tests
+
+
+## Register User
+
+POST
+
+/api/v1/auth/register
+
+Expected:
+
+201 Created
+
+
+## Duplicate Registration
+
+Expected:
+
+409 Conflict
+
+
+## Login Valid Credentials
+
+Expected:
+
+200 OK
+
+
+## Login Wrong Credentials
+
+Expected:
+
+401 Unauthorized
+
+
+## Current User
+
+GET
+
+/api/v1/auth/me
+
+
+With JWT:
+
+200 OK
+
+
+Without JWT:
+
+401 Unauthorized
+
+
+Security Checks:
+
+- Password never returned
+- JWT required for protected routes
+- Invalid tokens rejected

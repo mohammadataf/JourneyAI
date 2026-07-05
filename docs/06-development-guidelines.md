@@ -192,3 +192,48 @@ Must always be hashed.
 - Keep functions focused
 - Test before commit
 - Document important changes
+
+
+
+
+# Error Handling Guidelines
+
+JourneyAI follows centralized error handling.
+
+Controllers should not contain try/catch blocks.
+
+Correct:
+
+Controller
+- receives request
+- calls service
+- sends success response
+
+
+Services:
+- contain business logic
+- throw AppError for failures
+
+
+Example:
+
+throw new AppError(
+ "Invalid credentials",
+ 401
+);
+
+
+Async controllers must use:
+
+asyncHandler()
+
+
+Error flow:
+
+Service Error
+↓
+asyncHandler
+↓
+Global Error Middleware
+↓
+HTTP Response
