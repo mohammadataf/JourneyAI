@@ -3,6 +3,7 @@ import express from "express";
 import cors from "cors";
 import helmet from "helmet";
 import morgan from "morgan";
+import errorMiddleware from "./middlewares/error.middleware";
 
 const app = express();
 
@@ -15,7 +16,9 @@ app.use(helmet());
 app.use(morgan("dev"));
 
 
+
 app.use("/api/v1/auth", authRouter);
+app.use(errorMiddleware);
 
 /**
  * Health Check Route

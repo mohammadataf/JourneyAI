@@ -1,6 +1,7 @@
 import bcrypt from "bcrypt";
 import prisma from "../../../config/prisma";
 import { generateToken } from "../../../utils/jwt";
+import AppError from "../../../utils/AppError";
 
 
 type RegisterUserData = {
@@ -21,13 +22,14 @@ export const registerUserService = async (
     });
 
 
-    if (existingUser) {
-        return {
-            success: false,
-            message: "Email already exists.",
-        };
-    }
+    if(existingUser){
 
+    throw new AppError(
+        "Email already exists",
+        409
+    );
+
+}
 
     const hashedPassword = await bcrypt.hash(
         user.password,
@@ -68,10 +70,10 @@ export const loginUserService = async (
 
 
     if (!user) {
-        return {
-            success: false,
-            message: "Invalid email or password",
-        };
+       throw new AppError(
+    "Invalid email or password",
+    401
+);
     }
 
 
@@ -80,13 +82,12 @@ export const loginUserService = async (
         user.password
     );
 
-
-    if (!isPasswordValid) {
-        return {
-            success: false,
-            message: "Invalid email or password",
-        };
-    }
+if(!isPasswordValid){
+    throw new AppError(
+        "Invalid email or password",
+        401
+    );
+}
 
 
   const token = generateToken(user.id);
