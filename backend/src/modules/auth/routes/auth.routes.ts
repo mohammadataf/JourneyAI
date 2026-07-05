@@ -1,15 +1,27 @@
 import { Router } from "express";
-
 import {
     registerUser,
     loginUser,
     getCurrentUser,
+    refreshToken,
+    logoutUser
 } from "../controllers/auth.controller";
 
 import { authenticateUser } from "../../../middlewares/auth.middleware";
 
 
 const router = Router();
+
+router.post(
+    "/refresh",
+    refreshToken
+);
+
+
+router.post(
+    "/logout",
+    logoutUser
+);
 
 
 // Register user

@@ -1,165 +1,277 @@
 import bcrypt from "bcrypt";
+
 import prisma from "../../../config/prisma";
-import { generateToken } from "../../../utils/jwt";
+
 import AppError from "../../../utils/AppError";
 
+import {
+    generateAccessToken,
+    generateRefreshToken,
+    verifyRefreshToken
+} from "../../../utils/jwt";
 
-type RegisterUserData = {
-    name: string;
-    email: string;
-    password: string;
-};
 
+// REGISTER USER
+export const registerUserService = async (data: {
+    name:string;
+    email:string;
+    password:string;
+}) => {
 
-export const registerUserService = async (
-    user: RegisterUserData
-) => {
 
     const existingUser = await prisma.user.findUnique({
-        where: {
-            email: user.email,
-        },
+        where:{
+            email:data.email
+        }
     });
 
 
     if(existingUser){
 
-    throw new AppError(
-        "Email already exists",
-        409
-    );
+        throw new AppError(
+            "User already exists",
+            409
+        );
 
-}
+    }
+
 
     const hashedPassword = await bcrypt.hash(
-        user.password,
+        data.password,
         10
     );
 
 
-    const createdUser = await prisma.user.create({
-        data: {
-            name: user.name,
-            email: user.email,
-            password: hashedPassword,
+    const user = await prisma.user.create({
+
+        data:{
+            name:data.name,
+            email:data.email,
+            password:hashedPassword
         },
+
+
+        select:{
+            id:true,
+            name:true,
+            email:true,
+            createdAt:true
+        }
+
     });
 
 
-    return {
-        success: true,
-        message: "User registered successfully.",
-        data: {
-            id: createdUser.id,
-            name: createdUser.name,
-            email: createdUser.email,
-        },
-    };
-};
-export const loginUserService = async (
-    email: string,
-    password: string
-) => {
+    return user;
 
-
-    const user = await prisma.user.findUnique({
-        where: {
-            email,
-        },
-    });
-
-
-    if (!user) {
-       throw new AppError(
-    "Invalid email or password",
-    401
-);
-    }
-
-
-    const isPasswordValid = await bcrypt.compare(
-        password,
-        user.password
-    );
-
-if(!isPasswordValid){
-    throw new AppError(
-        "Invalid email or password",
-        401
-    );
-}
-
-
-  const token = generateToken(user.id);
-
-
-return {
-
-    success: true,
-
-    message: "Login successful",
-
-    token,
-
-    data: {
-
-        id: user.id,
-
-        name: user.name,
-
-        email: user.email,
-    },
-};
 };
 
-export const getCurrentUserService = async (
-    userId: string
-) => {
+
+
+// LOGIN USER
+export const loginUserService = async(data:{
+    email:string;
+    password:string;
+}) => {
 
 
     const user = await prisma.user.findUnique({
 
-        where: {
-            id: userId,
-        },
-
-
-        select: {
-
-            id: true,
-
-            name: true,
-
-            email: true,
-
-            createdAt: true,
-
-        },
+        where:{
+            email:data.email
+        }
 
     });
 
 
-    if (!user) {
 
-        return {
+    if(!user){
 
-            success: false,
-
-            message: "User not found",
-
-        };
+        throw new AppError(
+            "Invalid email or password",
+            401
+        );
 
     }
 
 
+
+    const isPasswordCorrect =
+        await bcrypt.compare(
+            data.password,
+            user.password
+        );
+
+
+
+    if(!isPasswordCorrect){
+
+        throw new AppError(
+            "Invalid email or password",
+            401
+        );
+
+    }
+
+
+
+    const accessToken =
+        generateAccessToken(user.id);
+
+
+
+    const refreshToken =
+        generateRefreshToken(user.id);
+
+
+
+    await prisma.refreshToken.create({
+
+        data:{
+
+            token:refreshToken,
+
+            userId:user.id
+
+        }
+
+    });
+
+
+
     return {
 
-        success: true,
+        accessToken,
 
-        message: "User fetched successfully",
-
-        data: user,
+        refreshToken
 
     };
+
+
+};
+
+
+
+
+// CURRENT USER
+export const getCurrentUserService = async(
+    userId:string
+) => {
+
+
+    const user = await prisma.user.findUnique({
+
+        where:{
+            id:userId
+        },
+
+
+        select:{
+
+            id:true,
+
+            name:true,
+
+            email:true,
+
+            createdAt:true
+
+        }
+
+    });
+
+
+
+    if(!user){
+
+        throw new AppError(
+            "User not found",
+            404
+        );
+
+    }
+
+
+    return user;
+
+};
+
+
+
+
+
+
+
+export const refreshTokenService = async(
+    token:string
+) => {
+
+
+    const savedToken =
+        await prisma.refreshToken.findUnique({
+
+            where:{
+                token
+            }
+
+        });
+
+
+
+    if(!savedToken){
+
+        throw new AppError(
+            "Invalid refresh token",
+            401
+        );
+
+    }
+
+
+
+    const decoded =
+        verifyRefreshToken(token);
+
+
+
+    const accessToken =
+        generateAccessToken(
+            decoded.id
+        );
+
+
+
+    return {
+        accessToken
+    };
+
+
+};
+
+
+
+
+
+
+export const logoutUserService = async(
+    token:string
+) => {
+
+
+    await prisma.refreshToken.deleteMany({
+
+        where:{
+
+            token:token
+
+        }
+
+    });
+
+
+
+    return {
+        message:"Logged out successfully"
+    };
+
 
 };

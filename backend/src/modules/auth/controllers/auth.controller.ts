@@ -7,6 +7,8 @@ import {
     registerUserService,
     loginUserService,
     getCurrentUserService,
+    refreshTokenService,
+    logoutUserService
 } from "../services/auth.service";
 
 import { asyncHandler } from "../../../utils/asyncHandler";
@@ -100,13 +102,9 @@ export const loginUser = asyncHandler(
 
 
 
-        const result = await loginUserService(
-
-            validationResult.data.email,
-
-            validationResult.data.password
-
-        );
+     const result = await loginUserService(
+    validationResult.data
+);
 
 
 
@@ -144,3 +142,66 @@ export const getCurrentUser = asyncHandler(
     }
 
 );
+
+
+export const refreshToken = asyncHandler(
+async(
+    req:Request,
+    res:Response
+)=>{
+
+
+    const { refreshToken } = req.body;
+
+
+    const result =
+        await refreshTokenService(
+            refreshToken
+        );
+
+
+    res.status(200).json({
+
+        success:true,
+
+        data:result
+
+    });
+
+
+});
+
+
+
+
+
+
+
+
+
+export const logoutUser = asyncHandler(
+async(
+    req:Request,
+    res:Response
+)=>{
+
+
+    const { refreshToken } = req.body;
+
+
+    const result =
+        await logoutUserService(
+            refreshToken
+        );
+
+
+    res.status(200).json({
+
+        success:true,
+
+        data:result
+
+    });
+
+
+});
