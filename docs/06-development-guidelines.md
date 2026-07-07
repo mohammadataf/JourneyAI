@@ -237,3 +237,44 @@ asyncHandler
 Global Error Middleware
 ↓
 HTTP Response
+
+# Frontend Guidelines
+
+
+Pages should not directly call Axios.
+
+Incorrect:
+
+Component
+↓
+axios.post()
+
+
+Correct:
+
+Component
+↓
+auth.api.ts
+↓
+axios.ts
+
+
+Benefits:
+
+- reusable APIs
+- cleaner components
+- easier maintenance
+
+
+Routing:
+
+All routes are managed inside:
+
+src/routes
+
+
+Environment:
+
+Frontend API URLs must use:
+
+VITE_API_URL
