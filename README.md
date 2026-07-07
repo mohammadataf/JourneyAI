@@ -1,4 +1,4 @@
-# 🌍 JourneyAI
+#  JourneyAI
 
 > **Enjoy the Journey, Not Just the Destination.**
 
@@ -8,7 +8,7 @@ Instead of simply navigating from **Point A → Point B**, JourneyAI helps you m
 
 ---
 
-## ✨ Vision
+##  Vision
 
 Modern navigation apps focus on reaching the destination as quickly as possible.
 
@@ -18,7 +18,7 @@ Whether you're planning a road trip, exploring a new city, or looking for hidden
 
 ---
 
-## 🚀 Current Development
+##  Current Development
 
 JourneyAI is currently under active development.
 
@@ -26,17 +26,17 @@ We are building the platform feature by feature using a professional software en
 
 Current Sprint:
 
-- ✅ Backend Foundation
-- 🔄 Authentication Module
-- ⏳ Maps Integration
-- ⏳ Route Recommendation Engine
-- ⏳ AI Trip Planner
+-  Backend Foundation
+-  Authentication Module
+-  Maps Integration
+-  Route Recommendation Engine
+-  AI Trip Planner
 
 ---
 
-# 🌟 Core Features
+ Core Features
 
-### 🛣️ Smart Route Comparison
+###  Smart Route Comparison
 
 Compare multiple routes based on:
 
@@ -52,7 +52,7 @@ Compare multiple routes based on:
 
 ---
 
-### 🤖 AI Journey Assistant
+###  AI Journey Assistant
 
 Instead of showing raw data,
 
@@ -64,7 +64,7 @@ Example:
 
 ---
 
-### 📍 Explore Nearby
+### Explore Nearby
 
 Tell JourneyAI how much time you have.
 
@@ -84,7 +84,7 @@ JourneyAI generates personalized plans with:
 
 ---
 
-### 💎 Hidden Gems
+###  Hidden Gems
 
 Discover places most navigation apps never recommend.
 
@@ -96,7 +96,7 @@ Discover places most navigation apps never recommend.
 
 ---
 
-### ❤️ Personalized Travel
+###  Personalized Travel
 
 Plan journeys based on your preferences.
 
@@ -110,7 +110,7 @@ Examples:
 
 ---
 
-# 🏗️ Tech Stack
+#  Tech Stack
 
 ## Frontend
 
@@ -140,7 +140,7 @@ Examples:
 
 ---
 
-# 📂 Project Structure
+#  Project Structure
 
 ```
 JourneyAI/
@@ -155,7 +155,7 @@ JourneyAI/
 
 ---
 
-# 👨‍💻 Development Workflow
+#  Development Workflow
 
 This project follows a feature-based architecture and a collaborative Git workflow.
 
@@ -174,7 +174,7 @@ Every feature is developed independently before being reviewed and merged.
 
 ---
 
-# 📚 Documentation
+#  Documentation
 
 Project documentation lives inside the `docs/` directory.
 
@@ -190,7 +190,7 @@ Including:
 
 ---
 
-# 🎯 Project Goals
+#  Project Goals
 
 - Build a scalable travel platform
 - Learn production-grade software engineering
@@ -201,9 +201,9 @@ Including:
 
 ---
 
-# 🚧 Project Status
+#  Project Status
 
-🟢 Active Development
+ Active Development
 
 This project is being built incrementally using agile development practices.
 
@@ -211,13 +211,13 @@ New features and improvements are added continuously.
 
 ---
 
-# 🤝 Contributors
+#  Contributors
 
 - **Mohammad Ataf** — Backend & Authentication
-- **Contributor** — Maps & Route Search
+- **UMAR RAFIQ** — Maps & Route Search
 
 ---
 
-# ⭐ Our Philosophy
+#  Our Philosophy
 
 > **"Don't just reach your destination. Enjoy the journey."**
