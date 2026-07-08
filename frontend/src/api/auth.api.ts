@@ -35,3 +35,27 @@ export const loginUser = (
 
 
 };
+
+export const getCurrentUser = () => {
+
+
+    return api.get(
+        "/auth/me"
+    );
+
+
+};
+export const logoutUser = (
+    refreshToken:string
+) => {
+
+
+    return api.post(
+        "/auth/logout",
+        {
+            refreshToken
+        }
+    );
+
+
+};

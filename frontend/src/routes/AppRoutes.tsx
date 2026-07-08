@@ -9,6 +9,8 @@ import Register from "../pages/Register";
 
 import Dashboard from "../pages/Dashboard";
 
+import ProtectedRoute from "./ProtectedRoute";
+
 
 
 const AppRoutes = () => {
@@ -37,10 +39,21 @@ const AppRoutes = () => {
             />
 
 
-            <Route 
-                path="/dashboard"
-                element={<Dashboard />}
-            />
+            <Route
+
+    path="/dashboard"
+
+    element={
+
+        <ProtectedRoute>
+
+            <Dashboard />
+
+        </ProtectedRoute>
+
+    }
+
+/>
 
 
         </Routes>
