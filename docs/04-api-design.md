@@ -553,3 +553,44 @@ POST
 Deletes refresh token from database.
 
 Invalidates user session.
+
+# Frontend Authentication Flow
+
+Authentication flow:
+
+Register Page
+↓
+Auth API Layer
+↓
+Backend Register Endpoint
+↓
+Database
+
+
+Login:
+
+User credentials
+↓
+Backend verification
+↓
+Access Token + Refresh Token
+↓
+Frontend storage
+
+
+Protected Requests:
+
+Axios Interceptor
+↓
+Authorization Header
+↓
+JWT Middleware
+
+
+Logout:
+
+Frontend Logout
+↓
+Backend Session Delete
+↓
+Clear Tokens

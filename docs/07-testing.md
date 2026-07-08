@@ -442,3 +442,44 @@ Completed checks:
 ✓ Axios instance configured
 
 ✓ Environment variables loaded
+
+# Sprint 17 Frontend Authentication Tests
+
+
+Register:
+
+✓ User can create account
+
+✓ User stored in database
+
+
+Login:
+
+✓ Correct credentials work
+
+✓ Wrong credentials fail
+
+✓ Tokens stored
+
+
+Protected Route:
+
+✓ Dashboard blocked without login
+
+✓ Dashboard works with token
+
+
+Axios:
+
+✓ JWT automatically attached
+
+
+Logout:
+
+✓ Backend logout called
+
+✓ Refresh token deleted
+
+✓ Local storage cleared
+
+✓ Dashboard blocked after logout

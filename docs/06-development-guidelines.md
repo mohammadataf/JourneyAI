@@ -278,3 +278,29 @@ Environment:
 Frontend API URLs must use:
 
 VITE_API_URL
+
+
+
+# Frontend Authentication Rules
+
+Components should not directly call Axios.
+
+Correct:
+
+Component
+↓
+auth.api.ts
+↓
+axios instance
+
+
+JWT Handling:
+
+All authenticated requests use Axios interceptor.
+
+Protected pages must use ProtectedRoute wrapper.
+
+
+Logout:
+
+Logout must remove refresh token from database before clearing client tokens.
