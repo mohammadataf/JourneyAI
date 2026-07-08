@@ -85,8 +85,8 @@ const SearchBar = ({
         padding: "3px",
         borderRadius: "10px",
         boxShadow: "0 2px 10px rgba(0,0,0,0.2)",
-        width: "1000px",
-        display:"flex",
+        width: "800px",
+        // display:"flex",
         // justifyContent:"center",
         alignItems:"center"
          

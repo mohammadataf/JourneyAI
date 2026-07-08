@@ -1,8 +1,8 @@
 import { Router } from "express";
-import { viaRouteController } from "../controllers/testViaRoute.controller";
+import { viaRouteController } from "../controllers/viaRoute.controller";
 
 const router = Router();
 
-router.post("/test-via-route", viaRouteController);
+router.post("/via-route", viaRouteController);
 
 export default router;

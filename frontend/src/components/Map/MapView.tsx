@@ -1,9 +1,7 @@
 // This component is responsible for displaying the map. It shows OpenStreetMap, the user's current location, destination marker, and later it will also display the route between two places. It acts as the main map component of JourneyAI.
 
 
-import {
-  Map,
-  Marker,} from "@vis.gl/react-google-maps";
+import {Map,Marker,} from "@vis.gl/react-google-maps";
 
 
 // import { MapContainer, TileLayer,Marker,Popup } from "react-leaflet";
@@ -18,6 +16,10 @@ import RouteInfoCard from "./RouteInfoCard";
 // import { destinationIcon } from "../../utils/mapIcons";
 import  VehicleSelector  from "./VehicleSelector"
 import RouteList from "./RouteList";
+import { getPOIs, type POI } from "../../services/poiService";
+
+import POIMarkers from "./POIMarkers";
+import { getViaRoute } from "../../services/viaRouteService";
 
 const MapView = () => {
     const {location, loading, error} = useCurrentLocation();
@@ -28,34 +30,91 @@ const MapView = () => {
     const [selectedRoute, setSelectedRoute] = useState(0);
     const [vehicle, setVehicle] = useState<"driving-car" |"cycling-regular" |"foot-walking" |"driving-hgv">("driving-car");
 
+    const [pois, setPOIs] = useState<POI[]>([]);
+    const [selectedPOI, setSelectedPOI] = useState<POI | null>(null);
+
     
     useEffect(() => {
        
       const fetchRoute = async () => {
        
         if (!location || !destination) return;
+
+        const startPoint = start
+          ? { // if user select any other loc as start
+              latitude: Number(start.lat),
+              longitude: Number(start.lon),
+            }
+          : {
+              latitude: location.latitude,
+              longitude: location.longitude,
+            };
+
+        const endPoint = {
+          latitude: Number(destination.lat),
+          longitude: Number(destination.lon),
+        };
        
+
+        //  fetch routes
          const routeData = await getRoute(
-              start? { // if user enter start loc then use start else user curr loc
-                    latitude: Number(start.lat),
-                    longitude: Number(start.lon),
-                  }
-                : {
-                    latitude: location.latitude, // user curr loc 
-                    longitude: location.longitude,
-                  },
-              {
-                latitude: Number(destination.lat),
-                longitude: Number(destination.lon),
-              },
+              startPoint,
+              endPoint,
               vehicle
             );
 
+
+        // fetch scenic POIs
+        const poiData = await getPOIs(
+          startPoint,
+          endPoint,
+          "scenic"
+        );
+
         setRoutes(routeData);
+        setPOIs(poiData);
+
+        console.log("POIs:", poiData);
       };
 
       fetchRoute();
     }, [location, start, destination,vehicle]);
+
+    useEffect(() => {
+        if (!selectedPOI || !location || !destination) return;
+
+        const fetchViaRoute = async () => {
+          const startPoint = start
+            ? {
+                latitude: Number(start.lat),
+                longitude: Number(start.lon),
+              }
+            : {
+                latitude: location.latitude,
+                longitude: location.longitude,
+              };
+
+          const endPoint = {
+            latitude: Number(destination.lat),
+            longitude: Number(destination.lon),
+          };
+
+          const routeData = await getViaRoute(
+            startPoint,
+            endPoint,
+            {
+              latitude: selectedPOI.latitude,
+              longitude: selectedPOI.longitude,
+            },
+            vehicle
+          );
+
+          setRoutes(routeData);
+          setSelectedRoute(0);
+        };
+
+        fetchViaRoute();
+      }, [selectedPOI, location,start,destination,vehicle]);
     
 
     if (loading) return <h2>Getting your location...</h2>;
@@ -114,6 +173,7 @@ const MapView = () => {
          
         )}
 
+         <POIMarkers pois={pois} onSelectPOI={setSelectedPOI}/>
         {destination && (
           <FlyToLocation
             latitude={Number(destination.lat)}

@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import { getPOIs, Theme } from "../services/poi.service";
+import { filterPOIs } from "../services/poiFilter.service";
 
 export async function poiController(req: Request, res: Response) {
   try {
@@ -7,11 +8,14 @@ export async function poiController(req: Request, res: Response) {
 
     const pois = await getPOIs(start, end, theme as Theme);
 
+    // for filter
+    const filteredPOIs = filterPOIs(pois, theme);
+
     res.status(200).json({
       success: true,
-      pois,
+      pois:filteredPOIs,
     });
-    console.log("pois",pois)
+    // console.log("filteredPOIs",filteredPOIs )
   } catch (error) {
     console.error(error);
 

@@ -54,7 +54,7 @@ export async function getPOIs(
               latitude,
               longitude,
             },
-            radius: 8000,
+            radius: 6000,
           },
         },
       },

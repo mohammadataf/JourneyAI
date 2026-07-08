@@ -1,6 +1,9 @@
 /*
-  This file sends the start and destination locations
-  to our backend and gets the route between them.
+  This file sends the start location, destination,
+  and one waypoint to the backend.
+
+  The backend uses GraphHopper's getRouteWithVias()
+  to generate a route that passes through the waypoint.
 */
 
 import axios from "axios";
@@ -16,35 +19,39 @@ export interface Route {
   duration: number;
 }
 
+export interface Waypoint {
+  latitude: number;
+  longitude: number;
+}
+
 export type Vehicle =
   | "driving-car"
   | "cycling-regular"
   | "foot-walking"
   | "driving-hgv";
 
-export const getRoute = async (
+export const getViaRoute = async (
   start: Coordinate,
   end: Coordinate,
+  waypoint: Waypoint,
   vehicle: Vehicle = "driving-car"
 ): Promise<Route[]> => {
   try {
-    
-
     const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
-    const { data } = await axios.post(`${BACKEND_URL}/api/get-routes`,
+
+    const { data } = await axios.post(
+      `${BACKEND_URL}/api/via-route`,
       {
         start,
         end,
-        theme:"scenic",
+        waypoint,
+        vehicle,
       }
     );
-    
-    // console.log("data is",data);
+
     return data.routes;
-
   } catch (error) {
-    console.error("Route Error:", error);
-
+    console.error("Via Route Error:", error);
     return [];
   }
 };

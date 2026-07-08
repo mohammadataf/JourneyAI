@@ -25,7 +25,7 @@ app.use(morgan("dev"));
 app.use("/api/v1/auth", authRouter);
 app.use("/api/v1/map", mapRouter);
 app.use("/api/v1/search", searchRoute);
-app.use("/api/route", routeRoutes);
+app.use("/api", routeRoutes);
 app.use("/api", viaRouteRoutes);
 app.use("/api", poiRoutes);
 

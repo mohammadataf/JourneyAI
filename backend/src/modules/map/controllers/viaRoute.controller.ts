@@ -1,21 +1,12 @@
 import { Request, Response } from "express";
-import {
-  getRouteWithVias,
-  Coordinate,
-} from "../services/graphhopper.service";
+import {getRouteWithVias} from "../services/graphhopper.service";
 
 export async function viaRouteController(
   req: Request,
   res: Response
 ) {
   try {
-    const { start, end, vehicle } = req.body;
-
-    // Temporary hardcoded waypoint
-    const waypoint: Coordinate = {
-      latitude: 34.0956,
-      longitude: 74.8637,
-    };
+    const { start, end, vehicle, waypoint } = req.body;
 
     const routes = await getRouteWithVias(
       start,
@@ -33,7 +24,7 @@ export async function viaRouteController(
     console.error(error);
 
     res.status(500).json({
-      message: "Failed to fetch route",
+      message: "Failed to fetch via route",
     });
   }
 }
