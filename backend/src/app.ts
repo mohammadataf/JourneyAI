@@ -4,6 +4,7 @@ import searchRoute from "./modules/map/routes/search.route";
 import routeRoutes from "./modules/map/routes/route.routes";
 import viaRouteRoutes from "./modules/map/routes/viaRoute.routes";
 import poiRoutes from "./modules/map/routes/poi.routes";
+import scenicRoutes from "./modules/map/routes/experience/scenic.routes";
 
  
 import express from "express";
@@ -28,6 +29,7 @@ app.use("/api/v1/search", searchRoute);
 app.use("/api", routeRoutes);
 app.use("/api", viaRouteRoutes);
 app.use("/api", poiRoutes);
+app.use("/api", scenicRoutes);
 
 /**
  * Health Check Route

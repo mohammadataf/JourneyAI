@@ -20,6 +20,8 @@ import { getPOIs, type POI } from "../../services/poiService";
 
 import POIMarkers from "./POIMarkers";
 import { getViaRoute } from "../../services/viaRouteService";
+import { getScenicExperience,  type ExperienceRoute } from "../../services/experienceService";
+import ScenicRouteList from "./ScenicRouteList";
 
 const MapView = () => {
     const {location, loading, error} = useCurrentLocation();
@@ -32,6 +34,9 @@ const MapView = () => {
 
     const [pois, setPOIs] = useState<POI[]>([]);
     const [selectedPOI, setSelectedPOI] = useState<POI | null>(null);
+    const [scenicRoutes, setScenicRoutes] = useState<ExperienceRoute[]>([]);
+
+    const [selectedScenicRoute, setSelectedScenicRoute] = useState(0);
 
     
     useEffect(() => {
@@ -115,6 +120,37 @@ const MapView = () => {
 
         fetchViaRoute();
       }, [selectedPOI, location,start,destination,vehicle]);
+
+    useEffect(() => {
+        const fetchScenicRoutes = async () => {
+          if (!location || !destination) return;
+
+          const startPoint = start
+            ? {
+                latitude: Number(start.lat),
+                longitude: Number(start.lon),
+              }
+            : {
+                latitude: location.latitude,
+                longitude: location.longitude,
+              };
+
+          const endPoint = {
+            latitude: Number(destination.lat),
+            longitude: Number(destination.lon),
+          };
+
+          const experiences = await getScenicExperience(
+            startPoint,
+            endPoint,
+            vehicle
+          );
+
+          setScenicRoutes(experiences);
+        };
+
+        fetchScenicRoutes();
+      }, [location, start, destination, vehicle]);
     
 
     if (loading) return <h2>Getting your location...</h2>;
@@ -180,17 +216,23 @@ const MapView = () => {
             longitude={Number(destination.lon)}
           /> )}
 
-         {routes.length > 0 && (
+         {/* {routes.length > 0 && (
           <RoutePath coordinates={routes[selectedRoute].coordinates}/>
           
+          )} */}
+
+          {scenicRoutes.length > 0 && (
+            <RoutePath
+              coordinates={scenicRoutes[selectedScenicRoute].route.coordinates}
+            />
           )}
 
-          {routes.map((route, index) => (
+          {/* {routes.map((route, index) => (
             <RoutePath
               key={index}
               coordinates={route.coordinates}
             />
-          ))}
+          ))} */}
 
         </Map>
     <VehicleSelector vehicle={vehicle} setVehicle={setVehicle}/>
@@ -208,6 +250,14 @@ const MapView = () => {
           routes={routes}
           selectedRoute={selectedRoute}
           setSelectedRoute={setSelectedRoute}
+        />
+      )}
+
+      {scenicRoutes.length > 0 && (
+        <ScenicRouteList
+          experiences={scenicRoutes}
+          selected={selectedScenicRoute}
+          setSelected={setSelectedScenicRoute}
         />
       )}
     </>
