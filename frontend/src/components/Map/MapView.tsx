@@ -216,10 +216,10 @@ const MapView = () => {
             longitude={Number(destination.lon)}
           /> )}
 
-         {/* {routes.length > 0 && (
+         {routes.length > 0 && (
           <RoutePath coordinates={routes[selectedRoute].coordinates}/>
           
-          )} */}
+          )}
 
           {scenicRoutes.length > 0 && (
             <RoutePath
@@ -236,8 +236,8 @@ const MapView = () => {
 
         </Map>
     <VehicleSelector vehicle={vehicle} setVehicle={setVehicle}/>
-    {/* {route && <RouteInfoCard route={route} />}
-     */}
+    {/* {route && <RouteInfoCard route={route} />} */}
+    
 
      {routes.length > 0 && (
         <RouteInfoCard

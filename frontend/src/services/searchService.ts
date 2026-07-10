@@ -21,7 +21,7 @@ export const searchPlaces = async (query: string): Promise<Place[]> => {
         query
       )}&format=jsonv2`
     );
-    // alert("hello")
+   
 
     if (!response.ok) {
       throw new Error("Failed to fetch places");

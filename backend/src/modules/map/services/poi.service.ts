@@ -25,24 +25,13 @@ const THEME_QUERY: Record<Theme, string> = {
 };
 
 /*
-  Fetch nearby places based on the selected theme.
-
-  NOTE:
-  Right now we search around the midpoint of the journey.
-  Later we will replace this with our corridor algorithm,
-  which will search only along the actual route.
+  Search nearby places around one location.
 */
-
-export async function getPOIs(
-  start: Coordinate,
-  end: Coordinate,
+async function searchPOIs(
+  location: Coordinate,
   theme: Theme
 ): Promise<POI[]> {
   try {
-    // Midpoint of the journey (temporary)
-    const latitude = (start.latitude + end.latitude) / 2;
-    const longitude = (start.longitude + end.longitude) / 2;
-
     const { data } = await axios.post(
       "https://places.googleapis.com/v1/places:searchText",
       {
@@ -51,8 +40,8 @@ export async function getPOIs(
         locationBias: {
           circle: {
             center: {
-              latitude,
-              longitude,
+              latitude: location.latitude,
+              longitude: location.longitude,
             },
             radius: 6000,
           },
@@ -68,7 +57,7 @@ export async function getPOIs(
       }
     );
 
-    const pois: POI[] = (data.places ?? []).map((place: any) => ({
+    return (data.places ?? []).map((place: any) => ({
       id: place.id,
       name: place.displayName.text,
       latitude: place.location.latitude,
@@ -77,8 +66,6 @@ export async function getPOIs(
       rating: place.rating,
       category: place.primaryType,
     }));
-
-    return pois;
   } catch (error) {
     if (axios.isAxiosError(error)) {
       console.log(error.response?.data);
@@ -88,4 +75,29 @@ export async function getPOIs(
 
     return [];
   }
+}
+
+/*
+  Search POIs along the whole journey.
+*/
+export async function getPOIs(
+  samplePoints: Coordinate[],
+  theme: Theme
+): Promise<POI[]> {
+
+  const allPOIs: POI[] = [];
+
+  for (const point of samplePoints) {
+    const pois = await searchPOIs(point, theme);
+    allPOIs.push(...pois);
+  }
+
+  // Remove duplicate POIs
+  const uniquePOIs = Array.from(
+    new Map(
+      allPOIs.map((poi) => [poi.id, poi])
+    ).values()
+  );
+
+  return uniquePOIs;
 }

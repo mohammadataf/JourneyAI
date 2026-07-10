@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { scenicController } from "../../controllers/experience/scenic.controller";
+import { scenicController } from "../../controllers/experienceControllers/scenic.controller";
 
 const router = Router();
 

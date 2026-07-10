@@ -6,14 +6,14 @@ export async function poiController(req: Request, res: Response) {
   try {
     const { start, end, theme } = req.body;
 
-    const pois = await getPOIs(start, end, theme as Theme);
+    // const pois = await getPOIs(start, end, theme as Theme);
 
     // for filter
-    const filteredPOIs = filterPOIs(pois, theme);
+    // const filteredPOIs = filterPOIs(pois, theme);
 
     res.status(200).json({
       success: true,
-      pois:filteredPOIs,
+      // pois:filteredPOIs,
     });
     // console.log("filteredPOIs",filteredPOIs )
   } catch (error) {

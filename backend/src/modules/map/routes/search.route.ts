@@ -1,8 +1,8 @@
-import { Router } from "express";
-import { searchPlaces } from "../controllers/search.controller";
+// import { Router } from "express";
+// import { searchPlaces } from "../controllers/search.controller";
 
-const router = Router();
+// const router = Router();
 
-router.post("/", searchPlaces);
+// router.post("/", searchPlaces);
 
-export default router;
+// export default router;

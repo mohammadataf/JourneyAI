@@ -1,4 +1,4 @@
-import { POI } from "../../services/poi.service";
+import { POI } from "../poi.service";
 
 /*
   Returns the straight-line distance (in meters)
@@ -50,7 +50,13 @@ export function distanceFromRoute(
   return minDistance;
 }
 
-const ROUTE_CORRIDOR_METERS = 1000;
+// const ROUTE_CORRIDOR_METERS = 2000;
+
+export function getCorridorWidth(routeDistance: number): number {
+  const width = routeDistance * 0.02;
+
+  return Math.max(500, Math.min(width, 5000));
+}
 
 /*
   Returns true if the POI lies close enough
@@ -58,7 +64,13 @@ const ROUTE_CORRIDOR_METERS = 1000;
 */
 export function isPOINearRoute(
   poi: POI,
-  routeCoordinates: [number, number][]
+  routeCoordinates: [number, number][],
+  routeDistance: number
 ): boolean {
-  return distanceFromRoute(poi, routeCoordinates) <= ROUTE_CORRIDOR_METERS;
+
+  const corridorWidth = getCorridorWidth(routeDistance);
+
+  return (
+    distanceFromRoute(poi, routeCoordinates) <= corridorWidth
+  );
 }

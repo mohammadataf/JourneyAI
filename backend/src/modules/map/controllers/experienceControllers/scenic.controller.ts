@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { getScenicRoutes } from "../../services/experience/experience.service";
+import { getScenicRoutes } from "../../services/experienceServices/experience.service";
 
 /*
   This controller receives the request from the frontend,
