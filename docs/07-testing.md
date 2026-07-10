@@ -418,3 +418,94 @@ Passed:
 ✓ Refresh tokens stored
 ✓ Database session validation
 ✓ Logout invalidates sessions
+
+
+# Sprint 16 Frontend Tests
+
+
+Completed checks:
+
+✓ React development server starts
+
+✓ Production build passes
+
+✓ Tailwind styles load correctly
+
+✓ Routes working:
+
+/
+/login
+/register
+/dashboard
+
+
+✓ Axios instance configured
+
+✓ Environment variables loaded
+
+# Sprint 17 Frontend Authentication Tests
+
+
+Register:
+
+✓ User can create account
+
+✓ User stored in database
+
+
+Login:
+
+✓ Correct credentials work
+
+✓ Wrong credentials fail
+
+✓ Tokens stored
+
+
+Protected Route:
+
+✓ Dashboard blocked without login
+
+✓ Dashboard works with token
+
+
+Axios:
+
+✓ JWT automatically attached
+
+
+Logout:
+
+✓ Backend logout called
+
+✓ Refresh token deleted
+
+✓ Local storage cleared
+
+✓ Dashboard blocked after logout
+
+# Sprint 17 Frontend Testing
+
+
+Authentication:
+
+✓ Register connected to backend
+
+✓ Login connected to backend
+
+✓ JWT tokens stored
+
+✓ Protected dashboard works
+
+✓ Axios attaches JWT automatically
+
+✓ Logout clears server session
+
+
+UI:
+
+✓ Auth pages responsive
+
+✓ Dashboard matches JourneyAI vision
+
+✓ Production build successful

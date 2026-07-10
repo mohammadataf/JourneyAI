@@ -358,3 +358,53 @@ req.user = {
 
 
 This allows controllers to access authenticated user information.
+
+
+
+
+# Frontend Architecture
+
+JourneyAI frontend uses:
+
+- React
+- TypeScript
+- Vite
+- Tailwind CSS
+- React Router
+- Axios
+
+
+Frontend Structure:
+
+src/
+
+api/
+- Handles backend communication
+
+pages/
+- Route level screens
+
+components/
+- Reusable UI
+
+context/
+- Global state management
+
+routes/
+- Application routing
+
+utils/
+- Helper functions
+
+
+API Flow:
+
+React Page
+↓
+API Service
+↓
+Axios Instance
+↓
+Express Backend
+↓
+Database
