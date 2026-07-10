@@ -483,3 +483,29 @@ Logout:
 ✓ Local storage cleared
 
 ✓ Dashboard blocked after logout
+
+# Sprint 17 Frontend Testing
+
+
+Authentication:
+
+✓ Register connected to backend
+
+✓ Login connected to backend
+
+✓ JWT tokens stored
+
+✓ Protected dashboard works
+
+✓ Axios attaches JWT automatically
+
+✓ Logout clears server session
+
+
+UI:
+
+✓ Auth pages responsive
+
+✓ Dashboard matches JourneyAI vision
+
+✓ Production build successful

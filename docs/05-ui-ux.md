@@ -152,3 +152,33 @@ Users can discover:
 - AI suggestions
 - Personalized recommendations
 - Interactive trip planner
+
+
+
+# JourneyAI UI Direction
+
+JourneyAI focuses on:
+
+"Experience the journey, not just the destination"
+
+
+Design principles:
+
+- Modern travel intelligence feel
+- Dark premium theme
+- Glass-style cards
+- Smooth interactions
+- Clear journey planning experience
+
+
+Core dashboard idea:
+
+Users choose journey experience:
+
+- Fast Route
+- Scenic Journey
+- Explore Mode
+
+
+JourneyAI is not a maps clone.
+The goal is intelligent travel discovery.

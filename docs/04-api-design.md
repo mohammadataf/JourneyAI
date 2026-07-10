@@ -594,3 +594,42 @@ Frontend Logout
 Backend Session Delete
 ↓
 Clear Tokens
+
+
+# Frontend Authentication Flow
+
+JourneyAI frontend authentication:
+
+Register:
+React Form
+↓
+Auth API Layer
+↓
+Backend
+↓
+Database
+
+
+Login:
+Credentials
+↓
+JWT Access Token
+Refresh Token
+↓
+Frontend Session
+
+
+Authenticated Requests:
+Axios Interceptor
+↓
+Bearer Token
+↓
+Backend JWT Middleware
+
+
+Logout:
+Frontend Logout
+↓
+Backend Refresh Token Removal
+↓
+Session Destroyed
