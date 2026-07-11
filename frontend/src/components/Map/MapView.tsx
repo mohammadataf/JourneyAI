@@ -20,7 +20,7 @@ import { getPOIs, type POI } from "../../services/poiService";
 
 import POIMarkers from "./POIMarkers";
 import { getViaRoute } from "../../services/viaRouteService";
-import { getScenicExperience,  type ExperienceRoute } from "../../services/experienceService";
+import { getExperienceRoutes,  type ExperienceRoute } from "../../services/experienceService";
 import ScenicRouteList from "./ScenicRouteList";
 
 const MapView = () => {
@@ -31,12 +31,12 @@ const MapView = () => {
     const [routes, setRoutes] = useState<Route[]>([]);
     const [selectedRoute, setSelectedRoute] = useState(0);
     const [vehicle, setVehicle] = useState<"driving-car" |"cycling-regular" |"foot-walking" |"driving-hgv">("driving-car");
+    const [theme, setTheme] = useState<"scenic" | "cafe" | "heritage" | "adventure" | "family">("cafe");
 
     const [pois, setPOIs] = useState<POI[]>([]);
     const [selectedPOI, setSelectedPOI] = useState<POI | null>(null);
-    const [scenicRoutes, setScenicRoutes] = useState<ExperienceRoute[]>([]);
-
-    const [selectedScenicRoute, setSelectedScenicRoute] = useState(0);
+    const [experienceRoutes, setExperienceRoutes] = useState<ExperienceRoute[]>([]);
+    const [selectedExperienceRoute, setSelectedExperienceRoute] = useState(0);
 
     
     useEffect(() => {
@@ -122,7 +122,7 @@ const MapView = () => {
       }, [selectedPOI, location,start,destination,vehicle]);
 
     useEffect(() => {
-        const fetchScenicRoutes = async () => {
+        const fetchExperienceRoutes = async () => {
           if (!location || !destination) return;
 
           const startPoint = start
@@ -140,17 +140,20 @@ const MapView = () => {
             longitude: Number(destination.lon),
           };
 
-          const experiences = await getScenicExperience(
+          const experiences = await getExperienceRoutes(
             startPoint,
             endPoint,
-            vehicle
+            "cafe",
+            vehicle,
+             
+            
           );
 
-          setScenicRoutes(experiences);
+          setExperienceRoutes(experiences);
         };
 
-        fetchScenicRoutes();
-      }, [location, start, destination, vehicle]);
+        fetchExperienceRoutes();
+      }, [location, start, destination, vehicle,theme]);
     
 
     if (loading) return <h2>Getting your location...</h2>;
@@ -221,9 +224,9 @@ const MapView = () => {
           
           )}
 
-          {scenicRoutes.length > 0 && (
+          {experienceRoutes.length > 0 && (
             <RoutePath
-              coordinates={scenicRoutes[selectedScenicRoute].route.coordinates}
+              coordinates={experienceRoutes[selectedExperienceRoute].route.coordinates}
             />
           )}
 
@@ -253,11 +256,11 @@ const MapView = () => {
         />
       )}
 
-      {scenicRoutes.length > 0 && (
+      {experienceRoutes.length > 0 && (
         <ScenicRouteList
-          experiences={scenicRoutes}
-          selected={selectedScenicRoute}
-          setSelected={setSelectedScenicRoute}
+          experiences={experienceRoutes}
+          selected={selectedExperienceRoute}
+          setSelected={setSelectedExperienceRoute}
         />
       )}
     </>

@@ -7,6 +7,7 @@ interface Props {
 }
 
 const POIMarkers = ({ pois, onSelectPOI }: Props) => {
+  console.log("pois",pois)
   return (
     <>
       {pois.map((poi) => (

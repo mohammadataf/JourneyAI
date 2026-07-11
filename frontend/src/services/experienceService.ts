@@ -32,20 +32,30 @@ export type Vehicle =
   | "foot-walking"
   | "driving-hgv";
 
-export async function getScenicExperience(
+export type Theme =
+  | "scenic"
+  | "cafe"
+  | "heritage"
+  | "adventure"
+  | "family";
+
+export async function getExperienceRoutes(
   start: Coordinate,
   end: Coordinate,
+  theme:Theme,
   vehicle: Vehicle = "driving-car"
+   
 ): Promise<ExperienceRoute[]> {
   try {
     const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
     const { data } = await axios.post(
-      `${BACKEND_URL}/api/experience/scenic`,
+      `${BACKEND_URL}/api/experience`,
       {
         start,
         end,
         vehicle,
+        theme
       }
     );
 

@@ -25,17 +25,19 @@ const THEME_QUERY: Record<Theme, string> = {
 };
 
 /*
-  Search nearby places around one location.
+  Generic nearby search.
+  Can be used by Experience and Explore modules.
 */
-async function searchPOIs(
+export async function searchNearbyPlaces(
   location: Coordinate,
-  theme: Theme
+  query: string,
+  radius: number = 6000
 ): Promise<POI[]> {
   try {
     const { data } = await axios.post(
       "https://places.googleapis.com/v1/places:searchText",
       {
-        textQuery: THEME_QUERY[theme],
+        textQuery: query,
 
         locationBias: {
           circle: {
@@ -43,7 +45,7 @@ async function searchPOIs(
               latitude: location.latitude,
               longitude: location.longitude,
             },
-            radius: 6000,
+            radius,
           },
         },
       },
@@ -68,9 +70,9 @@ async function searchPOIs(
     }));
   } catch (error) {
     if (axios.isAxiosError(error)) {
-      console.log(error.response?.data);
+      console.error(error.response?.data);
     } else {
-      console.log(error);
+      console.error(error);
     }
 
     return [];
@@ -78,26 +80,26 @@ async function searchPOIs(
 }
 
 /*
-  Search POIs along the whole journey.
+  Search POIs along an entire journey.
+  Used by Experience module.
 */
 export async function getPOIs(
   samplePoints: Coordinate[],
   theme: Theme
 ): Promise<POI[]> {
-
   const allPOIs: POI[] = [];
 
   for (const point of samplePoints) {
-    const pois = await searchPOIs(point, theme);
+    const pois = await searchNearbyPlaces(
+      point,
+      THEME_QUERY[theme]
+    );
+
     allPOIs.push(...pois);
   }
 
   // Remove duplicate POIs
-  const uniquePOIs = Array.from(
-    new Map(
-      allPOIs.map((poi) => [poi.id, poi])
-    ).values()
+  return Array.from(
+    new Map(allPOIs.map((poi) => [poi.id, poi])).values()
   );
-
-  return uniquePOIs;
 }

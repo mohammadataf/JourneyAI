@@ -53,7 +53,7 @@ export function distanceFromRoute(
 // const ROUTE_CORRIDOR_METERS = 2000;
 
 export function getCorridorWidth(routeDistance: number): number {
-  const width = routeDistance * 0.02;
+  const width = routeDistance * 0.03;
 
   return Math.max(500, Math.min(width, 5000));
 }

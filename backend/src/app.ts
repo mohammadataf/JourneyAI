@@ -7,6 +7,7 @@ import viaRouteRoutes from "./modules/map/routes/viaRoute.routes";
 import poiRoutes from "./modules/map/routes/poi.routes";
 
 import scenicRoutes from "./modules/map/routes/experienceRoutes/scenic.routes";
+import exploreRoutes from "./modules/explore/routes/explore.routes";
 
  
 import express from "express";
@@ -34,6 +35,11 @@ app.use("/api", viaRouteRoutes);
 app.use("/api", poiRoutes);
 
 app.use("/api", scenicRoutes);
+
+
+
+// explore routes
+app.use("/api/explore", exploreRoutes);
 
 /**
  * Health Check Route

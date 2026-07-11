@@ -16,11 +16,12 @@
 import {Coordinate,Vehicle,getRoute,Route,getRouteWithVias} from "../graphhopper.service";
 import { calculateScore } from "./scoring.service";
 
-import { getPOIs, POI } from "../poi.service";
+import { getPOIs, POI, Theme } from "../poi.service";
 import { filterPOIs } from "../poiFilter.service";
 import { isPOINearRoute } from "./corridor.service";
 import { removeNearbyPOIs } from "./diversity.service";
 import { sampleRoute } from "./routeSampler.service";
+import { groupPOIsBySamplePoint } from "./zone.service";
 
 export interface ExperienceRoute {
   poi: POI;
@@ -29,10 +30,11 @@ export interface ExperienceRoute {
 
 const MAX_SCENIC_ROUTES = 4;
 
-export async function getScenicRoutes(
+export async function getExperienceRoutes(
   start: Coordinate,
   end: Coordinate,
-  vehicle: Vehicle
+  vehicle: Vehicle,
+  theme: Theme
 ): Promise<ExperienceRoute[]> {
 
    
@@ -48,18 +50,18 @@ const fastestRoute = fastestRoutes[0];
 // Pick sample points along the route
 const samplePoints = sampleRoute(
   fastestRoute.coordinates,
-  fastestRoute.distance
+  // fastestRoute.distance
 );
  
-// Fetch all scenic POIs along the journey from Google Places
-const pois = await getPOIs(samplePoints, "scenic");
+// Fetch all  theme POIs along the journey from Google Places
+const pois = await getPOIs(samplePoints, theme);
 
 // Filter unwanted POIs
-const filteredPOIs = filterPOIs(pois, "scenic");
+const filteredPOIs = filterPOIs(pois, theme);
 
  
 
-// Keep only POIs that are close to the fastest route
+// Keep only POIs close to the fastest route
 const nearbyPOIs = filteredPOIs.filter((poi) =>
   isPOINearRoute(
     poi,
@@ -68,21 +70,37 @@ const nearbyPOIs = filteredPOIs.filter((poi) =>
   )
 );
 
-// Rank nearby POIs
-const rankedPOIs = [...nearbyPOIs].sort(
-  (a, b) => calculateScore(b) - calculateScore(a)
+// Group POIs by journey zones
+const zones = groupPOIsBySamplePoint(
+  nearbyPOIs,
+  samplePoints
 );
 
-// Remove nearby duplicate POIs
-const diversePOIs = removeNearbyPOIs(rankedPOIs);
+const topPOIs: POI[] = [];
 
-// Select top scenic POIs
-const topPOIs = diversePOIs.slice(0, MAX_SCENIC_ROUTES);
+for (const zone of zones) {
+
+  if (zone.pois.length === 0) continue;
+
+  // Sort POIs inside this zone
+  const ranked = [...zone.pois].sort(
+    (a, b) => calculateScore(b) - calculateScore(a)
+  );
+
+  // Remove nearby duplicate POIs
+  const  diversePOIs = removeNearbyPOIs(ranked);
+
+  // Pick the best POI from this zone
+  topPOIs.push(diversePOIs[0]);
+}
+
+console.log("Zones:", zones.length);
+console.log("Selected:", topPOIs.length);
 
 console.log("Total:", filteredPOIs.length);
 console.log("Nearby:", nearbyPOIs.length);
-console.log("Diverse:", diversePOIs.length);
-console.log("Selected:", topPOIs.length);
+// console.log("Diverse:", diversePOIs.length);
+// console.log("Selected:", topPOIs.length);
 
   const experienceRoutes: ExperienceRoute[] = [];
 

@@ -1,17 +1,17 @@
 import { Router } from "express";
-import { scenicController } from "../../controllers/experienceControllers/scenic.controller";
+import {  experienceController } from "../../controllers/experienceControllers/experience.controller";
 
 const router = Router();
 
 /*
-  Scenic Experience Route
+  Experience Route
 
-  POST /api/experience/scenic
+  POST /api/experience
 
-  Generates the top scenic routes between
-  the given start and destination.
+  Generates routes based on the selected
+  experience theme.
 */
 
-router.post("/experience/scenic", scenicController);
+router.post("/experience",  experienceController);
 
 export default router;
