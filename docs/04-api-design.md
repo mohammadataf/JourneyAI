@@ -633,3 +633,34 @@ Frontend Logout
 Backend Refresh Token Removal
 ↓
 Session Destroyed
+
+## POST /api/v1/journeys
+
+Description:
+Creates a new journey for the authenticated user.
+
+Authentication:
+Bearer Token required
+
+Request:
+
+{
+  "originName": "Srinagar",
+  "destinationName": "Leh",
+  "journeyType": "SCENIC",
+  "interests": [
+    "cafes",
+    "viewpoints"
+  ]
+}
+
+Success:
+201 Created
+
+Errors:
+
+400 Validation failed
+
+401 Unauthorized
+
+500 Internal server error

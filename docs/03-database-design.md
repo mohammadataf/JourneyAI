@@ -369,3 +369,20 @@ Allows:
 
 
 Deleting a user removes refresh tokens automatically using cascade delete.
+## Journey
+
+Fields:
+
+- id
+- originName
+- destinationName
+- journeyType
+- interests
+- status
+- userId
+- createdAt
+- updatedAt
+
+Relationship:
+
+User (1) -----> (Many) Journey
