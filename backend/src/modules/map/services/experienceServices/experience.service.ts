@@ -44,20 +44,21 @@ const fastestRoutes = await getRoute(start, end, vehicle);
 if (fastestRoutes.length === 0) {
   return [];
 }
+console.log("hello")
 
 const fastestRoute = fastestRoutes[0];
 
 // Pick sample points along the route
 const samplePoints = sampleRoute(
   fastestRoute.coordinates,
-  // fastestRoute.distance
+  fastestRoute.distance
 );
  
 // Fetch all  theme POIs along the journey from Google Places
 const pois = await getPOIs(samplePoints, theme);
 
 // Filter unwanted POIs
-const filteredPOIs = filterPOIs(pois, theme);
+const filteredPOIs = filterPOIs(pois);
 
  
 

@@ -85,39 +85,52 @@ import { Coordinate } from "../graphhopper.service";
   while still covering the whole journey.
 */
 export function sampleRoute(
-  coordinates: [number, number][]
+  coordinates: [number, number][],
+  routeDistance: number
 ): Coordinate[] {
 
   const n = coordinates.length;
 
   if (n === 0) return [];
 
-  // For very short routes like less than 5 km
-  if (n <= 5) {
-    return coordinates.map(([latitude, longitude]) => ({
-      latitude,
-      longitude,
-    }));
+  let indices: number[];
+
+  // < 20 km → 1 sample (middle)
+  if (routeDistance <= 20_000) {
+    indices = [
+      0,
+      Math.floor(n * 0.50),
+      n - 1,
+    ];
   }
 
-  const indices = [
-    0,
-    Math.floor(n * 0.25),
-    Math.floor(n * 0.50),
-    Math.floor(n * 0.75),
-    n - 1,
-  ];
+  // 20–80 km → 2 samples
+  else if (routeDistance <= 80_000) {
+    indices = [
+      0,
+      Math.floor(n * 0.33),
+      Math.floor(n * 0.66),
+      n - 1,
+    ];
+  }
 
-  const samples: Coordinate[] = [];
+  // > 80 km → 3 samples
+  else {
+    indices = [
+      0,
+      Math.floor(n * 0.25),
+      Math.floor(n * 0.50),
+      Math.floor(n * 0.75),
+      n - 1,
+    ];
+  }
 
-  for (const index of indices) {
+  return indices.map((index) => {
     const [latitude, longitude] = coordinates[index];
 
-    samples.push({
+    return {
       latitude,
       longitude,
-    });
-  }
-
-  return samples;
+    };
+  });
 }

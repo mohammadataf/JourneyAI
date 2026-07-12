@@ -1,15 +1,25 @@
-import { type ExperienceRoute } from "../../services/experienceService";
+import { type Theme,type ExperienceRoute } from "../../services/experienceService";
 
 interface Props {
   experiences: ExperienceRoute[];
   selected: number;
   setSelected: React.Dispatch<React.SetStateAction<number>>;
+  theme:Theme
 }
 
-const ScenicRouteList = ({
+const TITLES: Record<Theme, string> = {
+  scenic: "🌄 Scenic Routes",
+  cafe: "☕ Cafe Routes",
+  heritage: "🏛 Heritage Routes",
+  adventure: "🥾 Adventure Routes",
+  family: "👨‍👩‍👧 Family Routes",
+};
+
+const ExperienceRouteList  = ({
   experiences,
   selected,
   setSelected,
+  theme
 }: Props) => {
   return (
     <div
@@ -25,7 +35,7 @@ const ScenicRouteList = ({
         boxShadow: "0 2px 10px rgba(0,0,0,0.2)",
       }}
     >
-      <h3>🌿 Scenic Routes</h3>
+      <h3>{TITLES[theme]}</h3>
 
       {experiences.map((exp, index) => (
         <div
@@ -55,4 +65,4 @@ const ScenicRouteList = ({
   );
 };
 
-export default ScenicRouteList;
+export default ExperienceRouteList ;

@@ -47,6 +47,7 @@ export async function getExperienceRoutes(
    
 ): Promise<ExperienceRoute[]> {
   try {
+     
     const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
     const { data } = await axios.post(

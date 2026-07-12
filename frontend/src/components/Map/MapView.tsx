@@ -21,7 +21,9 @@ import { getPOIs, type POI } from "../../services/poiService";
 import POIMarkers from "./POIMarkers";
 import { getViaRoute } from "../../services/viaRouteService";
 import { getExperienceRoutes,  type ExperienceRoute } from "../../services/experienceService";
-import ScenicRouteList from "./ScenicRouteList";
+import ScenicRouteList from "./ExperienceRouteList";
+
+import ExperienceSelector from "./ExperienceSelector";
 
 const MapView = () => {
     const {location, loading, error} = useCurrentLocation();
@@ -39,6 +41,8 @@ const MapView = () => {
     const [selectedExperienceRoute, setSelectedExperienceRoute] = useState(0);
 
     
+
+
     useEffect(() => {
        
       const fetchRoute = async () => {
@@ -73,7 +77,7 @@ const MapView = () => {
         const poiData = await getPOIs(
           startPoint,
           endPoint,
-          "scenic"
+          theme
         );
 
         setRoutes(routeData);
@@ -83,7 +87,7 @@ const MapView = () => {
       };
 
       fetchRoute();
-    }, [location, start, destination,vehicle]);
+    }, [location, start, destination,vehicle,theme]);
 
     useEffect(() => {
         if (!selectedPOI || !location || !destination) return;
@@ -122,6 +126,8 @@ const MapView = () => {
       }, [selectedPOI, location,start,destination,vehicle]);
 
     useEffect(() => {
+      // alert("hello")
+       
         const fetchExperienceRoutes = async () => {
           if (!location || !destination) return;
 
@@ -143,17 +149,25 @@ const MapView = () => {
           const experiences = await getExperienceRoutes(
             startPoint,
             endPoint,
-            "cafe",
+            theme,
             vehicle,
              
             
           );
+
+          console.log("Theme:", theme);
+          console.log("Experiences:", experiences);
 
           setExperienceRoutes(experiences);
         };
 
         fetchExperienceRoutes();
       }, [location, start, destination, vehicle,theme]);
+
+    useEffect(() => {
+      setSelectedExperienceRoute(0);
+      setSelectedPOI(null);
+    }, [theme]);
     
 
     if (loading) return <h2>Getting your location...</h2>;
@@ -168,6 +182,8 @@ const MapView = () => {
 //       we are saying to SearchBar  whenever you need to update the start location, call my       setStart function.
       onDestinationSelect={setDestination} // same here
     />
+
+     
 
     
     <Map
@@ -219,10 +235,12 @@ const MapView = () => {
             longitude={Number(destination.lon)}
           /> )}
 
-         {routes.length > 0 && (
+
+          {/* normal route that is fastest */}
+         {/* {routes.length > 0 && (
           <RoutePath coordinates={routes[selectedRoute].coordinates}/>
           
-          )}
+          )} */}
 
           {experienceRoutes.length > 0 && (
             <RoutePath
@@ -239,6 +257,7 @@ const MapView = () => {
 
         </Map>
     <VehicleSelector vehicle={vehicle} setVehicle={setVehicle}/>
+    <ExperienceSelector theme={theme} onThemeChange={setTheme}/>
     {/* {route && <RouteInfoCard route={route} />} */}
     
 
@@ -256,11 +275,14 @@ const MapView = () => {
         />
       )}
 
+       
+
       {experienceRoutes.length > 0 && (
         <ScenicRouteList
           experiences={experienceRoutes}
           selected={selectedExperienceRoute}
           setSelected={setSelectedExperienceRoute}
+          theme={theme}
         />
       )}
     </>
