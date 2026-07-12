@@ -8,7 +8,6 @@ datasource db {
 }
 
 model User {
-
   id String @id @default(uuid())
 
   name String
@@ -20,6 +19,8 @@ model User {
   createdAt DateTime @default(now())
 
   refreshTokens RefreshToken[]
+
+    journeys Journey[]
 
 }
 
@@ -36,4 +37,38 @@ model RefreshToken {
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
+}
+enum JourneyType {
+  FAST
+  SCENIC
+  EXPLORE
+}
+
+enum JourneyStatus {
+  PLANNING
+  COMPLETED
+  CANCELLED
+}
+
+model Journey {
+
+  id              String         @id @default(uuid())
+
+  originName      String
+
+  destinationName String
+
+  journeyType     JourneyType
+
+  interests        String[]
+
+  status          JourneyStatus  @default(PLANNING)
+
+  userId          String
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  createdAt       DateTime @default(now())
+
+  updatedAt       DateTime @updatedAt
 }
