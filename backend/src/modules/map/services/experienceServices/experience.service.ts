@@ -28,7 +28,7 @@ export interface ExperienceRoute {
   route: Route;
 }
 
-const MAX_SCENIC_ROUTES = 4;
+// const MAX_EXPERIENCE_ROUTES = 4;
 
 export async function getExperienceRoutes(
   start: Coordinate,
@@ -44,8 +44,7 @@ const fastestRoutes = await getRoute(start, end, vehicle);
 if (fastestRoutes.length === 0) {
   return [];
 }
-console.log("hello")
-
+ 
 const fastestRoute = fastestRoutes[0];
 
 // Pick sample points along the route
@@ -95,13 +94,13 @@ for (const zone of zones) {
   topPOIs.push(diversePOIs[0]);
 }
 
-console.log("Zones:", zones.length);
-console.log("Selected:", topPOIs.length);
+ 
 
 console.log("Total:", filteredPOIs.length);
 console.log("Nearby:", nearbyPOIs.length);
-// console.log("Diverse:", diversePOIs.length);
-// console.log("Selected:", topPOIs.length);
+console.log("Zones:", zones.length);
+console.log("Selected:", topPOIs.length);
+ 
 
   const experienceRoutes: ExperienceRoute[] = [];
 

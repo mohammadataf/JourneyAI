@@ -37,7 +37,8 @@ export type Theme =
   | "cafe"
   | "heritage"
   | "adventure"
-  | "family";
+  | "family"
+  | "hotel";
 
 export async function getExperienceRoutes(
   start: Coordinate,

@@ -107,6 +107,20 @@
 
 import axios from "axios";
 import { Coordinate } from "./graphhopper.service";
+import {searchOpenTripMap} from "./providers/opentripmap.provider"
+import {searchGeoapify} from "./providers/geoapify.provider"
+
+
+const PROVIDERS = {
+  scenic: searchOpenTripMap,
+  heritage: searchOpenTripMap,
+  adventure: searchOpenTripMap,
+
+  cafe: searchGeoapify,
+  restaurant: searchGeoapify,
+  hotel: searchGeoapify,
+  petrol: searchGeoapify,
+} as const;
 
 export interface POI {
   id: string;
@@ -127,122 +141,7 @@ export type Theme =
   | "hotel"
   | "petrol";
  
-
-/*
-  Generic nearby search.
-*/
-export async function searchOpenTripMap(
-  location: Coordinate,
-  theme:Theme,
-  radius: number = 6000
-): Promise<POI[]> {
-  try {
-    const apiKey = process.env.OPENTRIPMAP_API_KEY!;
-
-    const { data } = await axios.get(
-      "https://api.opentripmap.com/0.1/en/places/radius",
-      {
-        params: {
-          radius,
-          lon: location.longitude,
-          lat: location.latitude,
-          format: "json",
-          limit: 20,
-          apikey: apiKey,
-        },
-      }
-    );
-
-    return (data ?? []).map((place: any) => ({
-      id: place.xid,
-      name: place.name || "Unknown",
-      latitude: place.point.lat,
-      longitude: place.point.lon,
-      address: "",
-      rating: undefined,
-      category: theme,
-    }));
-  } catch (error) {
-    if (axios.isAxiosError(error)) {
-      console.error(error.response?.data);
-    } else {
-      console.error(error);
-    }
-
-    return [];
-  }
-}
-
-
-async function searchOverpass(
-  location: Coordinate,
-  theme: Theme,
-  radius: number = 6000
-): Promise<POI[]> {
-
-  const OVERPASS_QUERY: Record<string, string> = {
-    cafe: "cafe",
-    restaurant: "restaurant",
-    hotel: "hotel",
-    petrol: "fuel",
-  };
-
-  const tag = OVERPASS_QUERY[theme];
-
-  const query = `
-    [out:json];
-    (
-      node["amenity"="${tag}"](around:${radius},${location.latitude},${location.longitude});
-      way["amenity"="${tag}"](around:${radius},${location.latitude},${location.longitude});
-      relation["amenity"="${tag}"](around:${radius},${location.latitude},${location.longitude});
-    );
-    out center;
-  `;
-
-  try {
-    console.log("call")
-
-     const { data } = await axios.get(
-    "https://overpass.kumi.systems/api/interpreter",
-    {
-      params: {
-        data: query,
-      },
-    }
-  );
-
-    return (data.elements ?? []).map((place: any) => ({
-
-      id: place.id.toString(),
-
-      name:
-        place.tags?.name ??
-        "Unknown",
-
-      latitude:
-        place.lat ??
-        place.center?.lat,
-
-      longitude:
-        place.lon ??
-        place.center?.lon,
-
-      address: "",
-
-      rating: undefined,
-
-      category: theme,
-
-    }));
-
-  } catch (error) {
-
-    console.error(error);
-
-    return [];
-
-  }
-}
+ 
 
 /*
   Search POIs along an entire journey.
@@ -255,23 +154,15 @@ export async function getPOIs(
 
   for (const point of samplePoints) {
 
-  let pois: POI[] = [];
+   const provider = PROVIDERS[theme];
 
-  switch (theme) {
+   if(!provider){
+    continue;
+   }
 
-    case "scenic":
-    case "heritage":
-    case "adventure":
-      pois = await searchOpenTripMap(point,theme);
-      break;
+  const pois = await provider(point, theme);
 
-    case "cafe":
-    case "restaurant":
-    case "hotel":
-    case "petrol":
-      pois = await searchOverpass(point, theme);
-      break;
-  }
+ 
 
   allPOIs.push(...pois);
 }

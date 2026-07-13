@@ -13,6 +13,7 @@ const TITLES: Record<Theme, string> = {
   heritage: "🏛 Heritage Routes",
   adventure: "🥾 Adventure Routes",
   family: "👨‍👩‍👧 Family Routes",
+  hotel :"Hotels",
 };
 
 const ExperienceRouteList  = ({

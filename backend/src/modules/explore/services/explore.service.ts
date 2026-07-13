@@ -1,4 +1,4 @@
-import { searchNearbyPlaces } from "../../map/services/poi.service";
+// import { searchNearbyPlaces } from "../../map/services/poi.service";
 import { NearbySearchRequest } from "../types/explore.types";
 
 const CATEGORY_QUERY: Record<string, string> = {
@@ -22,12 +22,12 @@ export async function health() {
 export async function getNearby(data: NearbySearchRequest) {
   const query = CATEGORY_QUERY[data.category] ?? data.category;
 
-  return await searchNearbyPlaces(
-    {
-      latitude: data.lat,
-      longitude: data.lng,
-    },
-    query,
-    data.radius
-  );
+  // return await searchNearbyPlaces(
+  //   {
+  //     latitude: data.lat,
+  //     longitude: data.lng,
+  //   },
+  //   query,
+  //   data.radius
+  // );
 }

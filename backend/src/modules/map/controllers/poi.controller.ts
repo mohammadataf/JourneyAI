@@ -44,7 +44,9 @@ export async function poiController(req: Request, res: Response) {
       });
     }
 
-    const samplePoints = sampleRoute(routes[0].coordinates);
+    const fastestRoute = routes[0];
+
+    const samplePoints = sampleRoute(routes[0].coordinates,fastestRoute.distance);
 
     const pois = await getPOIs(
       samplePoints,

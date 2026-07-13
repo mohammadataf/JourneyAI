@@ -33,7 +33,7 @@ const MapView = () => {
     const [routes, setRoutes] = useState<Route[]>([]);
     const [selectedRoute, setSelectedRoute] = useState(0);
     const [vehicle, setVehicle] = useState<"driving-car" |"cycling-regular" |"foot-walking" |"driving-hgv">("driving-car");
-    const [theme, setTheme] = useState<"scenic" | "cafe" | "heritage" | "adventure" | "family">("cafe");
+    const [theme, setTheme] = useState<"scenic" | "cafe" | "heritage" | "adventure" | "family" | "hotel">("cafe");
 
     const [pois, setPOIs] = useState<POI[]>([]);
     const [selectedPOI, setSelectedPOI] = useState<POI | null>(null);

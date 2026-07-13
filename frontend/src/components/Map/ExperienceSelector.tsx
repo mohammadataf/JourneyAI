@@ -47,6 +47,7 @@ const ExperienceSelector = ({
         <option value="heritage">🏛 Heritage</option>
         <option value="adventure">🥾 Adventure</option>
         <option value="family">👨‍👩‍👧 Family</option>
+         <option value="hotel">Hotel</option>
       </select>
     </div>
   );
