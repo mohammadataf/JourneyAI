@@ -527,3 +527,17 @@ Journey Creation API
 
 Status:
 PASS
+## Sprint 19 Testing
+
+Journey List API
+
+✓ User with journeys
+
+✓ User with no journeys
+
+✓ Missing JWT
+
+✓ Invalid JWT
+
+Status:
+PASS

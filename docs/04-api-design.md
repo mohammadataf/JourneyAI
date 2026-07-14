@@ -664,3 +664,25 @@ Errors:
 401 Unauthorized
 
 500 Internal server error
+## GET /api/v1/journeys
+
+Description:
+Returns all journeys belonging to the authenticated user.
+
+Authentication:
+Bearer Token required
+
+Response:
+200 OK
+
+{
+  "success": true,
+  "message": "Journeys fetched successfully",
+  "data": [...]
+}
+
+Errors:
+
+401 Unauthorized
+
+500 Internal Server Error
