@@ -43,3 +43,28 @@ export const createJourneyService = async (
     return journey;
 
 };
+export const getUserJourneysService = async (
+
+    userId: string
+
+) => {
+
+    const journeys = await prisma.journey.findMany({
+
+        where: {
+
+            userId
+
+        },
+
+        orderBy: {
+
+            createdAt: "desc"
+
+        }
+
+    });
+
+    return journeys;
+
+};

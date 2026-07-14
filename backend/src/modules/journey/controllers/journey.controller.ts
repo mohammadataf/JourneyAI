@@ -4,7 +4,10 @@ import { asyncHandler } from "../../../utils/asyncHandler";
 
 import { createJourneySchema } from "../validators/journey.validator";
 
-import { createJourneyService } from "../services/journey.service";
+import {
+    createJourneyService,
+    getUserJourneysService
+} from "../services/journey.service";
 
 
 
@@ -41,6 +44,36 @@ export const createJourney = asyncHandler(
             message: "Journey created successfully",
 
             data: journey
+
+        });
+
+    }
+
+);
+
+export const getUserJourneys = asyncHandler(
+
+    async (
+
+        req: Request,
+
+        res: Response
+
+    ) => {
+
+        const journeys = await getUserJourneysService(
+
+            req.user!.id
+
+        );
+
+        res.status(200).json({
+
+            success: true,
+
+            message: "Journeys fetched successfully",
+
+            data: journeys
 
         });
 
