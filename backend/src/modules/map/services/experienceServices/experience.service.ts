@@ -22,10 +22,14 @@ import { isPOINearRoute } from "./corridor.service";
 import { removeNearbyPOIs } from "./diversity.service";
 import { sampleRoute } from "./routeSampler.service";
 import { groupPOIsBySamplePoint } from "./zone.service";
+import { generateSummary, ExperienceSummary} from "./summary.service";
 
+
+ 
 export interface ExperienceRoute {
   poi: POI;
   route: Route;
+  summary: ExperienceSummary;
 }
 
 // const MAX_EXPERIENCE_ROUTES = 4;
@@ -94,6 +98,8 @@ for (const zone of zones) {
   topPOIs.push(diversePOIs[0]);
 }
 
+
+
  
 
 console.log("Total:", filteredPOIs.length);
@@ -102,31 +108,54 @@ console.log("Zones:", zones.length);
 console.log("Selected:", topPOIs.length);
  
 
-  const experienceRoutes: ExperienceRoute[] = [];
+  // const experienceRoutes: ExperienceRoute[] = [];
 
-  // Generate one route for each scenic POI
-  for (const poi of topPOIs) {
+  // Generate one route for each scenic POI and summary for each route 
+  const experienceRoutes = await Promise.all(
 
-    const routes = await getRouteWithVias(
-      start,
-      end,
-      [
-        {
-          latitude: poi.latitude,
-          longitude: poi.longitude,
-        },
-      ],
-      vehicle
-    );
+  topPOIs.map(async (poi) => {
 
-    // GraphHopper returns one route when using via-points.
-    if (routes.length > 0) {
-      experienceRoutes.push({
+
+    // Fetch the route and AI summary in parallel to reduce response time.
+    const [routes, summary] = await Promise.all([
+
+      getRouteWithVias(
+        start,
+        end,
+        [
+          {
+            latitude: poi.latitude,
+            longitude: poi.longitude,
+          },
+        ],
+        vehicle
+      ),
+
+      generateSummary(
         poi,
-        route: routes[0],
-      });
-    }
-  }
+        theme
+      ),
 
-  return experienceRoutes;
+    ]);
+
+    if (routes.length === 0) {
+      return null;
+    }
+
+    return {
+      poi,
+      route: routes[0],
+      summary,
+    };
+
+  })
+
+);
+
+return experienceRoutes.filter(
+  (route): route is ExperienceRoute => route !== null
+);
+  
+
+ 
 }

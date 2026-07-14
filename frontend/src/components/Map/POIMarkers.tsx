@@ -4,10 +4,17 @@ import type { POI } from "../../services/poiService";
 interface Props {
   pois: POI[];
   onSelectPOI: (poi: POI) => void;
+  color?: "red" | "green" | "blue" | "yellow";
 }
 
-const POIMarkers = ({ pois, onSelectPOI }: Props) => {
-  console.log("pois",pois)
+const POIMarkers = ({
+  pois,
+  onSelectPOI,
+  color = "red",
+}: Props) => {
+
+  const iconUrl = `https://maps.google.com/mapfiles/ms/icons/${color}-dot.png`;
+
   return (
     <>
       {pois.map((poi) => (
@@ -18,6 +25,7 @@ const POIMarkers = ({ pois, onSelectPOI }: Props) => {
             lng: poi.longitude,
           }}
           title={poi.name}
+          icon={iconUrl}
           onClick={() => onSelectPOI(poi)}
         />
       ))}

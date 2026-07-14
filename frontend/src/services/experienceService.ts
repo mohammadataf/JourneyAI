@@ -21,9 +21,16 @@ export interface POI {
   category: string;
 }
 
+export interface ExperienceSummary {
+  headline: string;
+  summary: string;
+  tips: string[];
+}
+
 export interface ExperienceRoute {
   poi: POI;
   route: Route;
+  summary: ExperienceSummary;
 }
 
 export type Vehicle =
@@ -38,7 +45,8 @@ export type Theme =
   | "heritage"
   | "adventure"
   | "family"
-  | "hotel";
+  | "hotel"
+  | "restaurant";
 
 export async function getExperienceRoutes(
   start: Coordinate,

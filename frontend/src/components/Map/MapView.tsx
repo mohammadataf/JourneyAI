@@ -24,6 +24,13 @@ import { getExperienceRoutes,  type ExperienceRoute } from "../../services/exper
 import ScenicRouteList from "./ExperienceRouteList";
 
 import ExperienceSelector from "./ExperienceSelector";
+import ExperienceSummaryCard from "./ExperienceSummaryCard";
+
+
+
+
+
+
 
 const MapView = () => {
     const {location, loading, error} = useCurrentLocation();
@@ -33,7 +40,7 @@ const MapView = () => {
     const [routes, setRoutes] = useState<Route[]>([]);
     const [selectedRoute, setSelectedRoute] = useState(0);
     const [vehicle, setVehicle] = useState<"driving-car" |"cycling-regular" |"foot-walking" |"driving-hgv">("driving-car");
-    const [theme, setTheme] = useState<"scenic" | "cafe" | "heritage" | "adventure" | "family" | "hotel">("cafe");
+    const [theme, setTheme] = useState<"scenic" | "cafe" | "heritage" | "adventure" | "family" | "hotel" | "restaurant">("cafe");
 
     const [pois, setPOIs] = useState<POI[]>([]);
     const [selectedPOI, setSelectedPOI] = useState<POI | null>(null);
@@ -199,36 +206,60 @@ const MapView = () => {
       gestureHandling="greedy"
       disableDefaultUI={false}
     >
-      <Marker
-       
-        position={
-          start
-          ? {
-              lat: Number(start.lat),
-              lng: Number(start.lon),
-            }
-          :{
-            lat:location!.latitude,
-            lng:location!.longitude,
-          }
-        }
+       <POIMarkers
+        pois={[
+          {
+            id: "start",
+            name: "Start",
+            latitude: start
+              ? Number(start.lat)
+              : location!.latitude,
+            longitude: start
+              ? Number(start.lon)
+              : location!.longitude,
+            category: "start",
+          },
+        ]}
+        onSelectPOI={() => {}}
+        color="green"
       />
+
+  {destination && (
+    <POIMarkers
+      pois={[
+        {
+          id: "destination",
+          name: "Destination",
+          latitude: Number(destination.lat),
+          longitude: Number(destination.lon),
+          category: "destination",
+        },
+      ]}
+      onSelectPOI={() => {}}
+      color="red"
+    />
+  )}
+             
          
         
 
-        {destination && (
-          <Marker
-            position={{
-              lat:Number(destination.lat),
-              lng:Number(destination.lon),
-            }}
-            // icon={destinationIcon}
+         <POIMarkers pois={pois} onSelectPOI={setSelectedPOI}/>
+
+         {/* selected poi markers */}
+         {experienceRoutes.length > 0 && (
+          <POIMarkers
+            pois={[experienceRoutes[selectedExperienceRoute].poi]}
+            
+            onSelectPOI={() => {}}
+            color="yellow"
           />
-             
-         
         )}
 
-         <POIMarkers pois={pois} onSelectPOI={setSelectedPOI}/>
+        {experienceRoutes.length > 0 && (
+          <ExperienceSummaryCard
+            experience={experienceRoutes[selectedExperienceRoute]}
+          />
+        )}
         {destination && (
           <FlyToLocation
             latitude={Number(destination.lat)}
@@ -267,13 +298,13 @@ const MapView = () => {
         />
       )}
 
-      {routes.length > 0 && (
+      {/* {routes.length > 0 && (
         <RouteList
           routes={routes}
           selectedRoute={selectedRoute}
           setSelectedRoute={setSelectedRoute}
         />
-      )}
+      )} */}
 
        
 

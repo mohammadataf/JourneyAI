@@ -25,7 +25,7 @@ export async function experienceController(
       success: true,
       experiences,
     });
-    // console.log("all experience",experiences)
+    console.log("all experience",experiences)
 
   } catch (error) {
     console.error(error);

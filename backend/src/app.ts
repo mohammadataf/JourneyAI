@@ -6,7 +6,7 @@ import routeRoutes from "./modules/map/routes/route.routes";
 import viaRouteRoutes from "./modules/map/routes/viaRoute.routes";
 import poiRoutes from "./modules/map/routes/poi.routes";
 
-import scenicRoutes from "./modules/map/routes/experienceRoutes/scenic.routes";
+import scenicRoutes from "./modules/map/routes/experienceRoutes/experience.routes";
 import exploreRoutes from "./modules/explore/routes/explore.routes";
 
  
