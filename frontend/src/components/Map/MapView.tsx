@@ -25,6 +25,7 @@ import ScenicRouteList from "./ExperienceRouteList";
 
 import ExperienceSelector from "./ExperienceSelector";
 import ExperienceSummaryCard from "./ExperienceSummaryCard";
+import {getSummary, type ExperienceSummary,} from "../../services/summaryService";
 
 
 
@@ -46,6 +47,7 @@ const MapView = () => {
     const [selectedPOI, setSelectedPOI] = useState<POI | null>(null);
     const [experienceRoutes, setExperienceRoutes] = useState<ExperienceRoute[]>([]);
     const [selectedExperienceRoute, setSelectedExperienceRoute] = useState(0);
+    const [summary, setSummary] = useState<ExperienceSummary | null>(null);
 
     
 
@@ -175,6 +177,31 @@ const MapView = () => {
       setSelectedExperienceRoute(0);
       setSelectedPOI(null);
     }, [theme]);
+
+    useEffect(() => {
+
+  if (experienceRoutes.length === 0) {
+    setSummary(null);
+    return;
+  }
+
+  const fetchSummary = async () => {
+
+    const experience =
+      experienceRoutes[selectedExperienceRoute];
+
+    const data = await getSummary(
+      experience.poi,
+      theme
+    );
+
+    setSummary(data);
+
+  };
+
+  fetchSummary();
+
+}, [experienceRoutes, selectedExperienceRoute, theme]);
     
 
     if (loading) return <h2>Getting your location...</h2>;
@@ -255,11 +282,12 @@ const MapView = () => {
           />
         )}
 
-        {experienceRoutes.length > 0 && (
-          <ExperienceSummaryCard
-            experience={experienceRoutes[selectedExperienceRoute]}
-          />
-        )}
+         {experienceRoutes.length > 0 && summary && (
+      <ExperienceSummaryCard
+        experience={experienceRoutes[selectedExperienceRoute]}
+        summary={summary}
+      />
+    )}
         {destination && (
           <FlyToLocation
             latitude={Number(destination.lat)}

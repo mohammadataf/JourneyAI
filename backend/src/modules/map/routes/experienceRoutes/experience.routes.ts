@@ -1,6 +1,6 @@
 import { Router } from "express";
 import {  experienceController } from "../../controllers/experienceControllers/experience.controller";
-
+import { summaryController } from "../../controllers/experienceControllers/summary.controller";
 const router = Router();
 
 /*
@@ -13,5 +13,6 @@ const router = Router();
 */
 
 router.post("/experience",  experienceController);
+router.post("/summary", summaryController);
 
 export default router;

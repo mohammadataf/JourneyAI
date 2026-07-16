@@ -29,7 +29,7 @@ import { generateSummary, ExperienceSummary} from "./summary.service";
 export interface ExperienceRoute {
   poi: POI;
   route: Route;
-  summary: ExperienceSummary;
+ 
 }
 
 // const MAX_EXPERIENCE_ROUTES = 4;
@@ -116,27 +116,18 @@ console.log("Selected:", topPOIs.length);
   topPOIs.map(async (poi) => {
 
 
-    // Fetch the route and AI summary in parallel to reduce response time.
-    const [routes, summary] = await Promise.all([
-
-      getRouteWithVias(
-        start,
-        end,
-        [
-          {
-            latitude: poi.latitude,
-            longitude: poi.longitude,
-          },
-        ],
-        vehicle
-      ),
-
-      generateSummary(
-        poi,
-        theme
-      ),
-
-    ]);
+    // Fetch the route .
+    const routes = await getRouteWithVias(
+      start,
+      end,
+      [
+        {
+          latitude: poi.latitude,
+          longitude: poi.longitude,
+        },
+      ],
+      vehicle
+    );
 
     if (routes.length === 0) {
       return null;
@@ -145,7 +136,6 @@ console.log("Selected:", topPOIs.length);
     return {
       poi,
       route: routes[0],
-      summary,
     };
 
   })

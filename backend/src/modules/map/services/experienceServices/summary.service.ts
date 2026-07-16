@@ -1,5 +1,6 @@
 import { GoogleGenAI } from "@google/genai";
 import { POI, Theme } from "../poi.service";
+import {  getCachedSummary, saveSummary} from "./summaryCache.service";
 
 const ai = new GoogleGenAI({
   apiKey: process.env.GEMINI_API_KEY!,
@@ -15,6 +16,18 @@ export async function generateSummary(
   poi: POI,
   theme: Theme
 ): Promise<ExperienceSummary> {
+
+  const cacheKey = `${theme}:${poi.id}`;
+
+  const cachedSummary = getCachedSummary(cacheKey);
+
+  if (cachedSummary) {
+    console.log("Summary Cache Hit:", poi.name);
+    return cachedSummary;
+  }
+
+  console.log("Generating Summary:", poi.name);
+
   try {
 
     const prompt = `
@@ -70,7 +83,8 @@ Return exactly:
 `;
 
     const response = await ai.models.generateContent({
-      model: "gemini-3.5-flash",
+      // model: "gemini-3.5-flash",
+      model: "gemini-3.1-flash-lite",
       contents: prompt,
     });
 
@@ -81,7 +95,14 @@ Return exactly:
       .replace(/```/g, "")
       .trim();
 
-    return JSON.parse(cleaned);
+    const summary: ExperienceSummary = JSON.parse(cleaned);
+
+    saveSummary(
+      cacheKey,
+      summary
+    );
+
+    return summary;
 
   } catch (error) {
 

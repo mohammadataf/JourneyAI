@@ -1,12 +1,19 @@
-import {type ExperienceRoute } from "../../services/experienceService";
 import { useState } from "react";
+import type { ExperienceRoute } from "../../services/experienceService";
+import type { ExperienceSummary } from "../../services/summaryService";
 
 interface Props {
   experience: ExperienceRoute;
+  summary: ExperienceSummary;
 }
 
-const ExperienceSummaryCard = ({ experience }: Props) => {
-  const { poi, summary } = experience;
+const ExperienceSummaryCard = ({
+  experience,
+  summary,
+}: Props) => {
+
+  const { poi } = experience;
+
   const [showTips, setShowTips] = useState(false);
 
   return (
@@ -25,24 +32,9 @@ const ExperienceSummaryCard = ({ experience }: Props) => {
         zIndex: 1000,
       }}
     >
-      {/* <h2
-        style={{
-          margin: 0,
-          color: "#2c3e50",
-        }}
-      >
-        {poi.name}
-      </h2> */}
+      {/* <h2>{poi.name}</h2> */}
 
-      {/* <p
-        style={{
-          margin: "4px 0 16px",
-          color: "#888",
-          fontSize: "14px",
-        }}
-      >
-        {poi.address}
-      </p> */}
+      {/* <p>{poi.address}</p> */}
 
       <h3
         style={{
@@ -63,46 +55,48 @@ const ExperienceSummaryCard = ({ experience }: Props) => {
         {summary.summary}
       </p>
 
-       {summary.tips.length > 0 && (
-  <>
-    <button
-      onClick={() => setShowTips(!showTips)}
-      style={{
-        marginTop: "12px",
-        padding: "6px 10px",
-        border: "none",
-        borderRadius: "8px",
-        background: "#4caf50",
-        color: "#fff",
-        cursor: "pointer",
-        fontWeight: 600,
-      }}
-    >
-      {showTips ? "Hide Travel Tips ▲" : "Show Travel Tips ▼"}
-    </button>
-
-    {showTips && (
-      <ul
-        style={{
-          marginTop: "12px",
-          paddingLeft: "20px",
-          color: "#555",
-        }}
-      >
-        {summary.tips.map((tip, index) => (
-          <li
-            key={index}
+      {summary.tips.length > 0 && (
+        <>
+          <button
+            onClick={() => setShowTips(!showTips)}
             style={{
-              marginBottom: "8px",
+              marginTop: "12px",
+              padding: "6px 10px",
+              border: "none",
+              borderRadius: "8px",
+              background: "#4caf50",
+              color: "#fff",
+              cursor: "pointer",
+              fontWeight: 600,
             }}
           >
-            {tip}
-          </li>
-        ))}
-      </ul>
-    )}
-  </>
-)}
+            {showTips
+              ? "Hide Travel Tips ▲"
+              : "Show Travel Tips ▼"}
+          </button>
+
+          {showTips && (
+            <ul
+              style={{
+                marginTop: "12px",
+                paddingLeft: "20px",
+                color: "#555",
+              }}
+            >
+              {summary.tips.map((tip, index) => (
+                <li
+                  key={index}
+                  style={{
+                    marginBottom: "8px",
+                  }}
+                >
+                  {tip}
+                </li>
+              ))}
+            </ul>
+          )}
+        </>
+      )}
     </div>
   );
 };
