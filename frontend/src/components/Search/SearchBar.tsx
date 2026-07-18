@@ -1,79 +1,102 @@
-// This component provides the search interface. It allows the user to search for a destination, displays matching place suggestions, and sends the selected place to the map component.
-
-
 import { useEffect, useState } from "react";
 import { searchPlaces, type Place } from "../../services/searchService";
 
 interface SearchBarProps {
-  onStartSelect: (place: Place) => void; // onStartSelect is actually pointing to setStart fun. like it is saying i am expecting a fun that accepting place
-  onDestinationSelect: (place: Place) => void;
+  onFindRoute: (
+    start: Place | null,
+    destination: Place | null
+  ) => void;
 }
 
 const SearchBar = ({
-  onStartSelect,
-  onDestinationSelect,
+  onFindRoute,
 }: SearchBarProps) => {
-  
   const [startQuery, setStartQuery] = useState("");
   const [destinationQuery, setDestinationQuery] = useState("");
 
   const [startPlaces, setStartPlaces] = useState<Place[]>([]);
   const [destinationPlaces, setDestinationPlaces] = useState<Place[]>([]);
 
-  const [loading, setLoading] = useState(false);
+  const [startLoading, setStartLoading] = useState(false);
+  const [destinationLoading, setDestinationLoading] = useState(false);
 
-   // Search suggestions for the From/start input.
-    useEffect(() => {
-      const fetchStartPlaces = async () => {
-        if (startQuery.trim().length < 2) {
-          setStartPlaces([]);
-          return;
-        }
+   
 
-        try {
-          setLoading(true);
-          
+  const [selectedStart, setSelectedStart] = useState<Place | null>(null);
+const [selectedDestination, setSelectedDestination] = useState<Place | null>(null);
 
-          const results = await searchPlaces(startQuery);
+const [startSelected, setStartSelected] = useState(false);
+const [destinationSelected, setDestinationSelected] = useState(false);
 
-          setStartPlaces(results);
-        } catch (error) {
-          console.error("Search Error:", error);
-        } finally {
-          setLoading(false);
-        }
-      };
+  // Search suggestions for Start
+  useEffect(() => {
+     
+    if (startSelected) return;
+    if (startQuery.trim().length < 3) {
+      setStartPlaces([]);
+      return;
+    }
 
-      fetchStartPlaces();
-    }, [startQuery]);
+    const controller = new AbortController();
 
+    const timer = setTimeout(async () => {
+      try {
+        setStartLoading(true);
 
-// Search suggestions for the To/destination input.
-    useEffect(() => {
-      const fetchDestinationPlaces = async () => {
-        if (destinationQuery.trim().length < 2) {
-          setDestinationPlaces([]);
-          return;
-        }
+        const results = await searchPlaces(
+          startQuery,
+          controller.signal
+        );
 
-        try {
-          setLoading(true);
+        setStartPlaces(results);
+      } catch (error) {
+        console.error(error);
+      } finally {
+        setStartLoading(false);
+      }
+    }, 350);
 
-          const results = await searchPlaces(destinationQuery);
-          console.log("Results:", results);
+    return () => {
+      clearTimeout(timer);
+      controller.abort();
+    };
+  }, [startQuery]);
 
-          setDestinationPlaces(results);
-        } catch (error) {
-          console.error("Search Error:", error);
-        } finally {
-          setLoading(false);
-        }
-      };
+  // Search suggestions for Destination
+  useEffect(() => {
+    
+    if (destinationSelected) return;
+    if (destinationQuery.trim().length < 3) {
+      setDestinationPlaces([]);
+      return;
+    }
 
-  fetchDestinationPlaces();
-}, [destinationQuery]);
+    const controller = new AbortController();
 
-   return (
+    const timer = setTimeout(async () => {
+      try {
+        setDestinationLoading(true);
+
+        const results = await searchPlaces(
+          destinationQuery,
+          controller.signal
+        );
+
+        setDestinationPlaces(results);
+      } catch (error) {
+        console.error(error);
+      } finally {
+        setDestinationLoading(false);
+      }
+    }, 350);
+
+    return () => {
+      clearTimeout(timer);
+      controller.abort();
+    };
+  }, [destinationQuery]);
+
+  return (
     <div
       style={{
         position: "absolute",
@@ -86,33 +109,36 @@ const SearchBar = ({
         borderRadius: "10px",
         boxShadow: "0 2px 10px rgba(0,0,0,0.2)",
         width: "800px",
-        // display:"flex",
-        // justifyContent:"center",
-        alignItems:"center"
-         
+        alignItems: "center",
       }}
     >
-      {/* From Input */}
+      {/* From */}
       <input
         type="text"
         placeholder="From"
         value={startQuery}
-        onChange={(e) => setStartQuery(e.target.value)}
+        onChange={(e) => {
+          setStartSelected(false);
+          setStartQuery(e.target.value);
+        }}
         style={{
           width: "94%",
           padding: "8px",
-          // marginBottom: "10px",
         }}
       />
+
+      {startLoading && <p>Searching...</p>}
+
+      
 
       {startPlaces.map((place) => (
         <div
           key={place.place_id}
-          onClick={() => {
-            setStartPlaces([]);
+         onClick={() => {
+            setSelectedStart(place);
+            setStartSelected(true);
             setStartQuery(place.display_name);
-             
-            onStartSelect(place);
+            setStartPlaces([]);
           }}
           style={{
             padding: "10px",
@@ -124,34 +150,38 @@ const SearchBar = ({
         </div>
       ))}
 
-      {/* To Input */}
+      {/* Destination */}
       <input
         type="text"
         placeholder="To"
         value={destinationQuery}
-        onChange={(e) => setDestinationQuery(e.target.value)}
+        onChange={(e) => {
+          setDestinationSelected(false);
+          setDestinationQuery(e.target.value);
+        }}
         style={{
           width: "94%",
           padding: "8px",
-          // marginTop: "10px",
         }}
       />
 
-      {loading && <p>Searching...</p>}
+      {destinationLoading && <p>Searching...</p>}
 
-      {!loading &&
-        destinationQuery &&
+      {!destinationLoading &&
+        !selectedDestination &&
+        destinationQuery.length >= 3 &&
         destinationPlaces.length === 0 && (
           <p>No places found.</p>
-        )}
+      )}
 
       {destinationPlaces.map((place) => (
         <div
           key={place.place_id}
-          onClick={() => {
+         onClick={() => {
+            setSelectedDestination(place);
+            setDestinationSelected(true);
             setDestinationQuery(place.display_name);
             setDestinationPlaces([]);
-            onDestinationSelect(place);
           }}
           style={{
             padding: "10px",
@@ -162,8 +192,25 @@ const SearchBar = ({
           {place.display_name}
         </div>
       ))}
+
+      <button
+        onClick={() =>
+          onFindRoute(
+            selectedStart,
+            selectedDestination
+          )
+        }
+        style={{
+          width: "100%",
+          marginTop: "10px",
+          padding: "10px",
+          cursor: "pointer",
+        }}
+      >
+        Find Route
+      </button>
     </div>
-);
+  );
 };
 
 export default SearchBar;

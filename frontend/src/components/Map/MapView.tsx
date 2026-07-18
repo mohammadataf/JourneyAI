@@ -37,11 +37,12 @@ const MapView = () => {
     const {location, loading, error} = useCurrentLocation();
     const [start, setStart] = useState<Place | null>(null);
     const [destination, setDestination] = useState<Place | null>(null);
+    const [startError, setStartError] = useState("");
 
     const [routes, setRoutes] = useState<Route[]>([]);
     const [selectedRoute, setSelectedRoute] = useState(0);
     const [vehicle, setVehicle] = useState<"driving-car" |"cycling-regular" |"foot-walking" |"driving-hgv">("driving-car");
-    const [theme, setTheme] = useState<"scenic" | "cafe" | "heritage" | "adventure" | "family" | "hotel" | "restaurant">("cafe");
+    const [theme, setTheme] = useState<"scenic" | "cafe" | "heritage" | "adventure"  | "hotel" | "restaurant">("cafe");
 
     const [pois, setPOIs] = useState<POI[]>([]);
     const [selectedPOI, setSelectedPOI] = useState<POI | null>(null);
@@ -52,126 +53,138 @@ const MapView = () => {
     
 
 
-    useEffect(() => {
+    // useEffect(() => {
        
-      const fetchRoute = async () => {
+    //   const fetchRoute = async () => {
        
-        if (!location || !destination) return;
+    //    if ((!location && !start) || !destination) return;
 
-        const startPoint = start
-          ? { // if user select any other loc as start
-              latitude: Number(start.lat),
-              longitude: Number(start.lon),
-            }
-          : {
-              latitude: location.latitude,
-              longitude: location.longitude,
-            };
+    //     const startPoint = start
+    //       ? { // if user select any other loc as start
+    //           latitude: Number(start.lat),
+    //           longitude: Number(start.lon),
+    //         }
+    //       : {
+    //           latitude: location!.latitude,
+    //           longitude: location!.longitude,
+    //         };
 
-        const endPoint = {
-          latitude: Number(destination.lat),
-          longitude: Number(destination.lon),
-        };
+    //     const endPoint = {
+    //       latitude: Number(destination.lat),
+    //       longitude: Number(destination.lon),
+    //     };
        
 
-        //  fetch routes
-         const routeData = await getRoute(
-              startPoint,
-              endPoint,
-              vehicle
-            );
+    //     //  fetch routes
+    //      const routeData = await getRoute(
+    //           startPoint,
+    //           endPoint,
+    //           vehicle
+    //         );
 
 
-        // fetch scenic POIs
-        const poiData = await getPOIs(
-          startPoint,
-          endPoint,
-          theme
-        );
+    //     // fetch scenic POIs
+    //     const poiData = await getPOIs(
+    //       startPoint,
+    //       endPoint,
+    //       theme
+    //     );
 
-        setRoutes(routeData);
-        setPOIs(poiData);
+    //     setRoutes(routeData);
+    //     setPOIs(poiData);
 
-        console.log("POIs:", poiData);
+    //     console.log("POIs:", poiData);
+    //   };
+
+    //   fetchRoute();
+    // }, [location, start, destination,vehicle,theme]);
+
+    // useEffect(() => {
+    //    if (!selectedPOI || (!location && !start) || !destination) return;
+
+    //     const fetchViaRoute = async () => {
+    //       const startPoint = start
+    //         ? {
+    //             latitude: Number(start.lat),
+    //             longitude: Number(start.lon),
+    //           }
+    //         : {
+    //             latitude: location!.latitude,
+    //             longitude: location!.longitude,
+    //           };
+
+    //       const endPoint = {
+    //         latitude: Number(destination.lat),
+    //         longitude: Number(destination.lon),
+    //       };
+
+    //       const routeData = await getViaRoute(
+    //         startPoint,
+    //         endPoint,
+    //         {
+    //           latitude: selectedPOI.latitude,
+    //           longitude: selectedPOI.longitude,
+    //         },
+    //         vehicle
+    //       );
+
+    //       setRoutes(routeData);
+    //       setSelectedRoute(0);
+    //     };
+
+    //     fetchViaRoute();
+    //   }, [selectedPOI, location,start,destination,vehicle]);
+
+
+
+
+
+
+    const handleFindRoute = async (
+  startPlace: Place | null,
+  destinationPlace: Place | null
+) => {
+  if (!destinationPlace) return;
+
+  if (!location && !startPlace) {
+    setStartError("Enter start location");
+    return;
+  }
+
+  setStart(startPlace);
+  setDestination(destinationPlace);
+  setStartError("");
+
+  const startPoint = startPlace
+    ? {
+        latitude: Number(startPlace.lat),
+        longitude: Number(startPlace.lon),
+      }
+    : {
+        latitude: location!.latitude,
+        longitude: location!.longitude,
       };
 
-      fetchRoute();
-    }, [location, start, destination,vehicle,theme]);
+  const endPoint = {
+    latitude: Number(destinationPlace.lat),
+    longitude: Number(destinationPlace.lon),
+  };
 
+  const experiences = await getExperienceRoutes(
+    startPoint,
+    endPoint,
+    theme,
+    vehicle
+  );
+
+  setExperienceRoutes(experiences);
+};
+    
     useEffect(() => {
-        if (!selectedPOI || !location || !destination) return;
+      if (!destination) return;
 
-        const fetchViaRoute = async () => {
-          const startPoint = start
-            ? {
-                latitude: Number(start.lat),
-                longitude: Number(start.lon),
-              }
-            : {
-                latitude: location.latitude,
-                longitude: location.longitude,
-              };
-
-          const endPoint = {
-            latitude: Number(destination.lat),
-            longitude: Number(destination.lon),
-          };
-
-          const routeData = await getViaRoute(
-            startPoint,
-            endPoint,
-            {
-              latitude: selectedPOI.latitude,
-              longitude: selectedPOI.longitude,
-            },
-            vehicle
-          );
-
-          setRoutes(routeData);
-          setSelectedRoute(0);
-        };
-
-        fetchViaRoute();
-      }, [selectedPOI, location,start,destination,vehicle]);
-
-    useEffect(() => {
-      // alert("hello")
-       
-        const fetchExperienceRoutes = async () => {
-          if (!location || !destination) return;
-
-          const startPoint = start
-            ? {
-                latitude: Number(start.lat),
-                longitude: Number(start.lon),
-              }
-            : {
-                latitude: location.latitude,
-                longitude: location.longitude,
-              };
-
-          const endPoint = {
-            latitude: Number(destination.lat),
-            longitude: Number(destination.lon),
-          };
-
-          const experiences = await getExperienceRoutes(
-            startPoint,
-            endPoint,
-            theme,
-            vehicle,
-             
-            
-          );
-
-          console.log("Theme:", theme);
-          console.log("Experiences:", experiences);
-
-          setExperienceRoutes(experiences);
-        };
-
-        fetchExperienceRoutes();
-      }, [location, start, destination, vehicle,theme]);
+      handleFindRoute(start, destination);
+    }, [vehicle, theme]);
 
     useEffect(() => {
       setSelectedExperienceRoute(0);
@@ -205,25 +218,24 @@ const MapView = () => {
     
 
     if (loading) return <h2>Getting your location...</h2>;
-    if (error) return <h2>{error}</h2>;
+    // if (error) return <h2>{error}</h2>;
 
     
 
   return (
     <>
-     <SearchBar
-      onStartSelect={setStart} // we are passing the function setStart as a prop to search bar.
-//       we are saying to SearchBar  whenever you need to update the start location, call my       setStart function.
-      onDestinationSelect={setDestination} // same here
-    />
+      <SearchBar
+        onFindRoute={handleFindRoute}
+      />
+    {startError && <p>{startError}</p>}
 
      
 
     
     <Map
-      defaultCenter={{
-        lat: location!.latitude,
-        lng: location!.longitude,
+       defaultCenter={{
+        lat: location ? location.latitude : 34.0837,
+        lng: location ? location.longitude : 74.7973,
       }}
       defaultZoom={16}
       style={{
@@ -233,23 +245,25 @@ const MapView = () => {
       gestureHandling="greedy"
       disableDefaultUI={false}
     >
-       <POIMarkers
-        pois={[
-          {
-            id: "start",
-            name: "Start",
-            latitude: start
-              ? Number(start.lat)
-              : location!.latitude,
-            longitude: start
-              ? Number(start.lon)
-              : location!.longitude,
-            category: "start",
-          },
-        ]}
-        onSelectPOI={() => {}}
-        color="green"
-      />
+       {(start || location) && (
+        <POIMarkers
+          pois={[
+            {
+              id: "start",
+              name: "Start",
+              latitude: start
+                ? Number(start.lat)
+                : location!.latitude,
+              longitude: start
+                ? Number(start.lon)
+                : location!.longitude,
+              category: "start",
+            },
+          ]}
+          onSelectPOI={() => {}}
+          color="green"
+        />
+      )}
 
   {destination && (
     <POIMarkers

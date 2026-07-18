@@ -51,7 +51,7 @@ const VehicleSelector = ({
         <option value="driving-car">🚗 Car</option>
         <option value="cycling-regular">🚲 Bike</option>
         <option value="foot-walking">🚶 Walk</option>
-        <option value="driving-hgv">🚛 Truck</option>
+         
       </select>
     </div>
   );

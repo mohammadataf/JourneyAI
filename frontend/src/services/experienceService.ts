@@ -44,7 +44,6 @@ export type Theme =
   | "cafe"
   | "heritage"
   | "adventure"
-  | "family"
   | "hotel"
   | "restaurant";
 

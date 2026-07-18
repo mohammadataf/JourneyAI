@@ -12,7 +12,6 @@ const TITLES: Record<Theme, string> = {
   cafe: "☕ Cafe Routes",
   heritage: "🏛 Heritage Routes",
   adventure: "🥾 Adventure Routes",
-  family: "👨‍👩‍👧 Family Routes",
   hotel :"Hotels",
   restaurant:"Restaurant",
 };
