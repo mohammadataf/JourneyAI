@@ -17,6 +17,16 @@ JourneyAI focuses on **making every journey meaningful**.
 Whether you're planning a road trip, exploring a new city, or looking for hidden places nearby, JourneyAI helps you discover experiences—not just routes.
 
 ---
+<img width="1912" height="945" alt="image" src="https://github.com/user-attachments/assets/c1fc6c58-5167-4b06-919d-91a6aab86d78" />
+<img width="1896" height="793" alt="image" src="https://github.com/user-attachments/assets/590dac3b-55fe-420b-897b-cb608aeb2cd2" />
+<img width="1896" height="793" alt="image" src="https://github.com/user-attachments/assets/2f5edba2-371d-43a3-aa8d-1f91c20aaedb" />
+<img width="1901" height="671" alt="image" src="https://github.com/user-attachments/assets/8d39f294-23f1-4c08-bd32-7d3176f97c29" />
+<img width="1877" height="437" alt="image" src="https://github.com/user-attachments/assets/339a373c-fc15-4154-9154-b21e46a4a8b9" />
+<img width="1907" height="811" alt="image" src="https://github.com/user-attachments/assets/fe7180c6-0919-4d0e-8e67-b79fd75baa83" />
+
+
+
+
 
 ##  Current Development
 
