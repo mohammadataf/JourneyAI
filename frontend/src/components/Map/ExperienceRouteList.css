@@ -1,0 +1,51 @@
+.experience-panel::-webkit-scrollbar {
+  display: none;
+   background: red !important;
+}
+
+.experience-card {
+  background: #fff;
+  border: 1px solid #ececec;
+  border-radius: 18px;
+  padding: 18px;
+  margin-bottom: 16px;
+  cursor: pointer;
+   /* background: red !important; */
+
+  opacity: 0.8;
+
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
+
+  transition:
+    opacity 0.25s ease,
+    border 0.25s ease,
+    box-shadow 0.25s ease;
+}
+
+.experience-card:hover {
+  opacity: 1;
+  
+}
+
+.experience-card.active {
+  opacity: 1;
+  border: 2px solid #2563eb;
+  box-shadow: 0 14px 30px rgba(37, 99, 235, 0.18);
+}
+
+.experience-title {
+  font-weight: 700;
+  font-size: 17px;
+  margin-bottom: 8px;
+  color: #1f2937;
+}
+
+.experience-info {
+  font-size: 14px;
+  color: #6b7280;
+  margin-bottom: 6px;
+}
+
+.experience-info:last-child {
+  margin-bottom: 0;
+}
