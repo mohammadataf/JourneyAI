@@ -10,6 +10,7 @@ routing-engine/data/*
 routing-engine/graphs/
 routing-engine/cache/
 routing-engine/graph-cache/
+routing-engine/*.pdf
 
 
 
