@@ -4,7 +4,12 @@
     "target": "es2023",
     "lib": ["ES2023", "DOM"],
     "module": "esnext",
+<<<<<<< HEAD
      "types": ["vite/client", "google.maps"],
+=======
+    "types": ["vite/client"],
+    "allowArbitraryExtensions": true,
+>>>>>>> 19dd3caf8aaf39ddb60ca7d66f0c719ccfff5e9f
     "skipLibCheck": true,
 
     /* Bundler mode */

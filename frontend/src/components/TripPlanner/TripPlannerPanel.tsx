@@ -370,11 +370,11 @@ const TripPlannerPanel = () => {
       <div
         style={{
           position: "absolute",
-          top: "20px",
-          left: "20px",
-          width: "360px",
+          top: "5px",
+          left: "8px",
+          width: "330px",
           maxHeight:
-            "calc(100vh - 40px)",
+            "calc(100vh - 60px)",
           background: "#ffffff",
           borderRadius: "22px",
           padding: "24px",

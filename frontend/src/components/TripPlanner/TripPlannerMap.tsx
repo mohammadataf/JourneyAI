@@ -31,7 +31,8 @@ const TripPlannerMap = ({
       defaultZoom={14}
       style={{
         width: "100%",
-        height: "100vh",
+        height: "100%",
+         
       }}
       gestureHandling="greedy"
       disableDefaultUI={false}

@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import MapView from "./components/Map/MapView";
 import ExplorePage from "./pages/ExplorePage";
@@ -18,3 +19,22 @@ function App() {
 }
 
 export default App;
+=======
+import AppRoutes from "./routes/AppRoutes";
+
+
+function App() {
+
+
+    return (
+
+        <AppRoutes />
+
+    );
+
+
+}
+
+
+export default App;
+>>>>>>> 19dd3caf8aaf39ddb60ca7d66f0c719ccfff5e9f

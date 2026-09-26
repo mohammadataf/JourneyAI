@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Dependencies
 node_modules/
 
@@ -28,3 +29,7 @@ Thumbs.db
 # IDE
 .vscode/
 .idea/
+=======
+
+/src/generated/prisma
+>>>>>>> 19dd3caf8aaf39ddb60ca7d66f0c719ccfff5e9f
